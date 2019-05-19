@@ -208,7 +208,7 @@
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="user-image" alt="User Image">
-                <span class="hidden-xs">Alexander Pierce</span>
+                <span class="hidden-xs">{{auth()->user()->name}}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
@@ -216,8 +216,12 @@
                   <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">
   
                   <p>
-                    Alexander Pierce - Web Developer
-                    <small>Member since Nov. 2012</small>
+                    @php
+                        use carbon\carbon;
+                        $date= Carbon::parse(auth()->user()->sinceUser(auth()->user()->id));
+                    @endphp
+                      {{auth()->user()->name}} - {{Auth::user()->whatRole(auth()->user()->id)}}
+                    <small>Miembro desde {{ $date->isoFormat('MMM YY') }}</small>
                   </p>
                 </li>
                 <!-- Menu Body -->

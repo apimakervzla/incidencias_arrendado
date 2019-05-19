@@ -464,8 +464,6 @@ $(function () {
     'font-size': '20px'
   }
 
-  
-
   wrapper.append(close)
   wrapper.append(link)
   wrapper.append(btn)
@@ -474,7 +472,6 @@ $(function () {
 
   wrapper.hide(4).delay(500).slideDown()
 });
-
 
 ga('create', 'UA-46680343-1', 'auto')
 ga('send', 'pageview')

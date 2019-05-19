@@ -11,18 +11,23 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ asset("css/bootstrap/bootstrap.min.css")}}">
   <!-- Font Awesome -->
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ asset("css/bootstrap/font-awesome.min.css")}}">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.0/css/ionicons.css" integrity="sha256-D3+gw6JE4hEJ9pnCs+BglSfZ2yG5gF+JGdPJ/v183fo=" crossorigin="anonymous" />
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="{{ asset("dist/css/jquery-jvectormap.css")}}">
+  <link rel="stylesheet" href="{{ asset("css/bootstrap/ionicons.min.css")}}">
+  <link rel="stylesheet" href="{{ asset("dist/css/daterangepicker.css")}}">
+  <link rel="stylesheet" href="{{ asset("dist/css/bootstrap-datepicker.min.css")}}">
+  <link rel="stylesheet" href="{{ asset("css/bootstrap/all.css")}}">
+  <link rel="stylesheet" href="{{ asset("css/bootstrap/bootstrap-colorpicker.min.css")}}">
+  <link rel="stylesheet" href="{{ asset("css/bootstrap/bootstrap-timepicker.min.css")}}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset("dist/css/AdminLTE.min.css")}}">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{{ asset("css/all-skins.min.css")}}">
+  
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -71,26 +76,32 @@
 <!-- ./wrapper -->
 
  <!-- jQuery 3 -->
- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+ <script src="{{ asset("js/jquery.min.js")}}"></script>
  <!-- Bootstrap 3.3.7 -->
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ <script src="{{ asset("js/bootstrap.min.js")}}"></script>
  {{-- <script src="{{ asset("js/fastclick.js")}}"></script> --}}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+ <script src="{{ asset("js/jquery.inputmask.js")}}"></script>
+<script src="{{ asset("js/jquery.inputmask.date.extensions.js")}}"></script>
+<script src="{{ asset("js/jquery.inputmask.extensions.js")}}"></script>
+<script src="{{ asset("js/moment.min.js")}}"></script>
+<script src="{{ asset("js/daterangepicker.js")}}"></script>
+<script src="{{ asset("js/bootstrap-datepicker.min.js")}}"></script>
+<script src="{{ asset("js/bootstrap-colorpicker.min.js")}}"></script>
+<script src="{{ asset("js/bootstrap-timepicker.min.js")}}"></script>
+<script src="{{ asset("js/jquery.slimscroll.min.js")}}"></script>
+<script src="{{ asset("js/icheck.min.js")}}"></script>
 <!-- FastClick -->
 <script src="{{ asset("js/fastclick.js")}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset("js/adminlte.min.js")}}"></script>
-<!-- Sparkline -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.4/jquery.sparkline.min.js" integrity="sha256-BuAkLaFyq4WYXbN3TFSsG1M5GltEeFehAMURi4KBpUM=" crossorigin="anonymous"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset("js/demo.js")}}"></script>
 <!-- jvectormap  -->
 <script src="{{ asset("js/jquery-jvectormap-1.2.2.min.js")}}"></script>
 <script src="{{ asset("js/jquery-jvectormap-world-mill-en.js")}}"></script>
-<!-- SlimScroll -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js" integrity="sha256-qE/6vdSYzQu9lgosKxhFplETvWvqAAlmAuR+yPh/0SI=" crossorigin="anonymous"></script>
-<!-- ChartJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" integrity="sha256-RtrB/Bgt7EpDgAWIsLodnrtWCCcUCYtZOnuR6bxpSiM=" crossorigin="anonymous"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset("js/dashboard2.js")}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset("js/demo.js")}}"></script>
+
+
+@stack('scripts')
 </body>
 </html>

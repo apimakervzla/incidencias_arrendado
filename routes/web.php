@@ -13,7 +13,7 @@
 Auth::routes(['verify' => true]);
 
 App::setLocale("es");
-Route::middleware(['middleware' => 'verified'])->group(function(){
+Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(function(){
 
     Route::get('/', function () {
         return view('index');
@@ -33,5 +33,18 @@ Route::middleware(['middleware' => 'verified'])->group(function(){
     Route::get('/roles/d{role_id}', 'Auth\RoleController@destroy')->name('destroy.roles');
 
     Route::get('/auditall', 'Auth\AuditController@index')->name('index.audit');
+
+    //MODULO CONTROL NOVEDADES
+
+    Route::get('/novedadesall', 'Novedades\NovedadesController@index')->name('index.novedades');
+    Route::get('/novedades', 'Novedades\NovedadesController@create')->name('create.novedades');
+    Route::post('/novedadnew', 'Novedades\NovedadesController@store')->name('store.novedades');
+    Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');   
+    
+    // Route::get('/hola', function () {
+    //     return view('ControlNovedades.create');
+    // });
+
+    //FIN MODULO CONTROL NOVEDADES
 });
 

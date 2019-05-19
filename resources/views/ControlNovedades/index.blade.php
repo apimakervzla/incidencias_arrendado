@@ -10,6 +10,9 @@
                 <i class="fa fa-plus"></i>
             </button>
              Agregar Novedad</a>
+             <div class="container">
+                @include('flash::message')
+            </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -57,6 +60,12 @@
                         @endif                    
                       </td>
                     <td>
+                        @php
+                        use carbon\carbon;
+                        $date= Carbon::parse(auth()->user()->sinceUser(auth()->user()->id));
+                    @endphp
+                      {{auth()->user()->name}} - {{Auth::user()->whatRole(auth()->user()->id)}}
+                    <small>Miembro desde </small>
                       {{ $novedad->created_at}}
                     </td>
                     <td class="td-actions">

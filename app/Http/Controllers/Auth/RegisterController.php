@@ -141,8 +141,9 @@ class RegisterController extends Controller
         }
         else{
             $user = User::find($user_id)
-            ->fill($request->input());
+            ->fill($request->input());            
             $user->save();
+
             $user_up = DB::table('role_user')
                     ->where('user_id', $user_id)
                     ->update(['role_id'=>$request["role_id"]]);

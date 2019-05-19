@@ -41,9 +41,9 @@ Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(fu
     Route::post('/novedadnew', 'Novedades\NovedadesController@store')->name('store.novedades');
     Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');   
     
-    Route::get('/hola', function () {
-        return view('ControlNovedades.create');
-    });
+    // Route::get('/hola', function () {
+    //     return view('ControlNovedades.create');
+    // });
 
     //FIN MODULO CONTROL NOVEDADES
 });

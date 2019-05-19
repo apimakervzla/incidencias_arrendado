@@ -43,6 +43,24 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function whatRole($user_id)
+    {
+        $rolename= Role::select('description')
+                        ->join('role_user','role_user.role_id','roles.id')                        
+                        ->where('role_user.user_id',$user_id)
+                        ->first();        
+        return $rolename->description;
+    }
+
+    public function sinceUser($user_id)
+    {
+        $since= Role::select('role_user.created_at')
+                        ->join('role_user','role_user.role_id','roles.id')                        
+                        ->where('role_user.user_id',$user_id)
+                        ->first();        
+        return $since->created_at;
+    }
     /**
      * The attributes that are mass assignable.
      *

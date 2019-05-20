@@ -64,7 +64,7 @@
                             <!-- textarea -->
                             <div class="form-group">
                               <label>Detalle la Novedad</label>
-                              <textarea name="descripcion_novedad" class="form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
+                              <textarea name="descripcion_novedad" class="form-control" rows="3" placeholder="Escriba aquí ..." required></textarea>
                             </div>
 
                             <!-- radio -->
@@ -95,7 +95,7 @@
                                         <div class="col-md-6">
                                         <div class="form-group">
                                         <label>Tipo incidencia</label>
-                                        <select name="tipo_incidencia_id" class="form-control select2" style="width: 100%;">
+                                        <select name="tipo_incidencia_id" class="form-control select2" style="width: 100%;" data-placeholder="Seleccione">
                                         {{-- @foreach ($tipos_incidencias as $tipo_incidencia)
                                         <option value="{{$tipo_incidencia->id}}">{{$tipo_incidencia->descripcion_incidencia}}</option>    
                                             @endforeach                    --}}
@@ -104,7 +104,7 @@
                                         <div class="form-group">
                                                 <label>Detalle la Incidencia</label>
                                                 <textarea name="detalle_incidencia" class="form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
-                                        </div>
+                                        </div>                                        
                                         <div class="form-group">
                                           <label>Agentes</label>
                                           <select name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
@@ -113,6 +113,31 @@
                                             @endforeach                   
                                           </select>
                                         </div>
+                                        <div class="form-group">
+                                            <label>Actores</label>
+                                            <select name="role_user_id_agente" class="form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                        @foreach ($agentes as $agente)
+                                        <option value="{{$agente->id}}">{{$agente->name}}</option>    
+                                            @endforeach                   
+                                          </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nombreinput">Nombre</label>
+                                            <input name="nombre_actor" class="form-control" id="nombreinput" placeholder="Ingrese Nombre" type="text">
+                                          </div>
+                                          <div class="form-group">
+                                              <label for="apellidoinput">Apellido</label>
+                                              <input name="apellido_actor" class="form-control" id="apellidoinput" placeholder="Ingrese Apellid" type="text">
+                                            </div>
+                                        <div class="form-group">
+                                            <label for="documentoid">Documento de Identidad</label>
+                                            <input name="identificacion_actor" class="form-control" id="documentoid" placeholder="Ingrese Doc" type="text">
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="telefono">Teléfono de Contacto</label>
+                                            <input name="telefono_actor" class="form-control" id="telefono" placeholder="Ingrese tel" type="tel">
+                                          </div>                                       
+                                       
                                         <div class="form-group">
                                         <label for="exampleInputFile">Evidencias</label>
                                         <input name="url_imagen[]" id="exampleInputFile" type="file" multiple>
@@ -141,11 +166,14 @@
 <script>  
     $(document).ready(function() {
        //Initialize Select2 Elements
-       $('.select2').select2();       
-
-       $(".option").click(function(){   
-
+       $('.select2').select2();              
+       $(".option").click(function(){
           $(".incidenciasform").toggle("slide");         
+        if ($(this).val()!=1) {
+          
+        } else {
+          $().attr();
+        }
        });
    
        //Datemask dd/mm/yyyy

@@ -30,6 +30,29 @@
             
             <li class="header">Navegación del MENU</li>            
 
+            @php
+                $module_auths= auth()->user()->whatModule(auth()->user()->id);                
+            @endphp
+            @foreach ($module_auths as $key=> $module_auth)            
+            @if ($module_auth->module_id!=$key || $module_auth->module_id<$key)
+            <li class="treeview">
+                <a href="#">                  
+                  <i class="fa fa-dashboard"></i> <span>{{$module_auth->module_description}}</span>      
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                    @if ($module_auth->module_option_id!=$key || $module_auth->module_option_id<$key)
+                    
+                        <li>
+                        <a href="index.html"><i class="fa fa-circle-o"></i>{{$module_auth->module_option_description}}</a>
+                        </li>
+                    @endif
+                  </ul>
+                </li>
+                @endif                
+            @endforeach
            
             <li class="treeview">
               <a href="#">

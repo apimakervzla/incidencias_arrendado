@@ -16,7 +16,8 @@ class TblTurnos extends Migration
         Schema::create('tbl_turnos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('role_user_id');
-            $table->unsignedBigInteger('tipo_turno_id');
+            $table->unsignedBigInteger('tipo_turno_id');   
+            $table->boolean('status_turno');         
             $table->timestamps();
 
             $table->foreign('role_user_id')->references('id')->on('role_user')->onDelete('restrict');

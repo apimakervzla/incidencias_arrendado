@@ -39,7 +39,9 @@ Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(fu
     Route::get('/novedadesall', 'Novedades\NovedadesController@index')->name('index.novedades');
     Route::get('/novedades', 'Novedades\NovedadesController@create')->name('create.novedades');
     Route::post('/novedadnew', 'Novedades\NovedadesController@store')->name('store.novedades');
-    Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');   
+    Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');       
+    
+    Route::post('/agentesturnosnew', 'Novedades\NovedadesController@agentesturnosstore')->name('store.agentes_turnos');    
     
     // Route::get('/hola', function () {
     //     return view('ControlNovedades.create');

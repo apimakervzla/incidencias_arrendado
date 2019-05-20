@@ -17,12 +17,13 @@ class TblNovedades extends Migration
             $table->bigIncrements('id');
             $table->longText('descripcion_novedad');
             $table->boolean('incluir_incidencia')->default('0');
-            $table->unsignedBigInteger('numero_incidencia');
+            $table->BigInteger('incidencia_id')->nullable();
+            $table->BigInteger('turno_id')->nullable();
             $table->unsignedBigInteger('role_user_id');
             $table->timestamps();
-
-            $table->foreign('numero_incidencia')->references('id')->on('tbl_incidencias')->onDelete('restrict');
+            
             $table->foreign('role_user_id')->references('id')->on('role_user')->onDelete('restrict');
+            $table->foreign('turno_id')->references('id')->on('tbl_turnos')->onDelete('restrict');
         });
     }
 

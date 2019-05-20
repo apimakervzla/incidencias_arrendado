@@ -21,6 +21,7 @@ class TblAgentesTurnos extends Migration
             $table->timestamps();
 
             $table->foreign('role_user_id')->references('id')->on('role_user')->onDelete('restrict');
+            $table->foreign('role_user_id_agente')->references('id')->on('role_user')->onDelete('restrict');
             $table->foreign('turno_id')->references('id')->on('tbl_turnos')->onDelete('restrict');
         });
     }

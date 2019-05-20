@@ -25,7 +25,7 @@ class TblIncidencias extends Migration
             $table->longText('url_imagen_4')->nullable();
             $table->longText('url_imagen_5')->nullable();
             $table->longText('url_imagen_6')->nullable();
-            $table->longText('detalle_incidencia')->nullable();
+            $table->longText('detalle_incidencia');
             $table->timestamps();
 
             $table->foreign('role_user_id')->references('id')->on('role_user')->onDelete('restrict');

@@ -31,9 +31,9 @@
                 <div class="form-group">
                   <label>Agentes</label>
                   <select name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                {{-- @foreach ($agentes as $agente)
+                @foreach ($agentes as $agente)
                 <option value="{{$agente->id}}">{{$agente->name}}</option>    
-                    @endforeach                    --}}
+                    @endforeach                   
                   </select>
                 </div>
                 <!-- /.form-group -->
@@ -58,8 +58,9 @@
                           <h3 class="box-title">Novedad</h3>
                         </div>
                         <!-- /.box-header -->
-                        <div class="box-body">
-                          <form role="form">
+                        <div class="box-body" >                        
+                        <form method="POST" role="form" action="{{ route("store.novedades")}}">
+                          @csrf
                             <!-- textarea -->
                             <div class="form-group">
                               <label>Detalle la Novedad</label>
@@ -69,13 +70,13 @@
                             <!-- radio -->
                             <div class="form-group">
                             <div class="radio">
-                                Causa Incidencia:
+                                {{ __('Causa Incidencia:') }}                                
                                 <label>
-                                <input name="inculir_incidencia[]" id="optionsRadios1" class="option" value="1" type="radio">
+                                <input name="incidencia_id" id="optionsRadios1" class="option" value="1" type="radio">
                                 Si
                                 </label>
                                 <label>
-                                <input name="inculir_incidencia[]" id="optionsRadios2" class="option" value="0" checked="" type="radio">
+                                <input name="incidencia_id" id="optionsRadios2" class="option" value="0" checked="" type="radio">
                                 No
                                 </label>
                             </div>                                                       
@@ -103,7 +104,15 @@
                                         <div class="form-group">
                                                 <label>Detalle la Incidencia</label>
                                                 <textarea name="detalle_incidencia" class="form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
-                                              </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Agentes</label>
+                                          <select name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                        @foreach ($agentes as $agente)
+                                        <option value="{{$agente->id}}">{{$agente->name}}</option>    
+                                            @endforeach                   
+                                          </select>
+                                        </div>
                                         <div class="form-group">
                                         <label for="exampleInputFile">Evidencias</label>
                                         <input name="url_imagen[]" id="exampleInputFile" type="file" multiple>

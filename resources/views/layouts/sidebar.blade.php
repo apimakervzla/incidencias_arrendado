@@ -31,27 +31,24 @@
             <li class="header">Navegación del MENU</li>            
 
             @php
-                $module_auths= auth()->user()->whatModule(auth()->user()->id);                
+                 $module_auths= auth()->user()->whatModule(auth()->user()->id);
+            $ind=0;            
             @endphp
-            @foreach ($module_auths as $key=> $module_auth)            
-            @if ($module_auth->module_id!=$key || $module_auth->module_id<$key)
+
+            @foreach ($module_auths as $key=> $module_auth)
             <li class="treeview">
-                <a href="#">                  
-                  <i class="fa fa-dashboard"></i> <span>{{$module_auth->module_description}}</span>      
+                <a href="#">
+                    <i class="{{$module_auth->icon_module}}"></i> <span>{{$module_auth->module_description}}</span>  
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                    @if ($module_auth->module_option_id!=$key || $module_auth->module_option_id<$key)
-                    
-                        <li>
-                        <a href="index.html"><i class="fa fa-circle-o"></i>{{$module_auth->module_option_description}}</a>
-                        </li>
-                    @endif
-                  </ul>
-                </li>
-                @endif                
+                  <li>
+                    <a href="{{ route($module_auth->route)}}"><i class="{{$module_auth->icon_module_option}}"></i>{{$module_auth->module_option_description}}</a>
+                  </li>                
+                </ul>                          
+            </li>           
             @endforeach
            
             <li class="treeview">

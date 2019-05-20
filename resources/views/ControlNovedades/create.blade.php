@@ -25,31 +25,38 @@
             </div>
           </div>          
           <!-- /.box-header -->
+          <form method="POST" role="form" action="{{ route("store.agentes_turnos")}}">
+              @csrf
           <div class="box-body">
             <div class="row">
               <div class="col-md-6">
+                {{-- @if ($agentes_turnos=="") --}}
                 <div class="form-group">
-                  <label>Agentes</label>
-                  <select name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                @foreach ($agentes as $agente)
-                <option value="{{$agente->id}}">{{$agente->name}}</option>    
-                    @endforeach                   
-                  </select>
-                </div>
+                    <label>Agentes</label>
+                    <select name="role_user_id_agente[]" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                  @foreach ($agentes as $agente)
+                  <option value="{{$agente->id}}">{{$agente->name}}</option>    
+                      @endforeach                   
+                    </select>
+                  </div>
+                {{-- @endif                 --}}
                 <!-- /.form-group -->
               </div>
               <!-- /.col -->
             </div>
             <!-- /.row -->
           </div>
+          <div class="box-footer">
+              <button type="submit" class="btn btn-primary">Asignar</button>
+            </div> 
+          </form>
           <!-- /.box-body -->
           <div class="box-footer">
             Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
             the plugin.
           </div>
         </div>
-        <!-- /.box -->
-  
+        <!-- /.box -->              
         <div class="row">
             
           <div class="col-md-12">
@@ -103,22 +110,22 @@
                                         </div>
                                         <div class="form-group">
                                                 <label>Detalle la Incidencia</label>
-                                                <textarea name="detalle_incidencia" class="form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
+                                                <textarea id="detalle_incidencia" name="detalle_incidencia" class="form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
                                         </div>                                        
                                         <div class="form-group">
                                           <label>Agentes</label>
-                                          <select name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                          <select name="role_user_id_actor[]" name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
                                         @foreach ($agentes as $agente)
                                         <option value="{{$agente->id}}">{{$agente->name}}</option>    
                                             @endforeach                   
                                           </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Actores</label>
-                                            <select name="role_user_id_agente" class="form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                        @foreach ($agentes as $agente)
-                                        <option value="{{$agente->id}}">{{$agente->name}}</option>    
-                                            @endforeach                   
+                                            <label>Tipos Actores</label>
+                                            <select name="tipo_actor_id" class="form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                        {{-- @foreach ($tipos_actores as $tipo_actor)
+                                        <option value="{{$tipo_actor->id}}">{{$tipo_actor->descripcion_tipo_actor}}</option>    
+                                            @endforeach                    --}}
                                           </select>
                                         </div>
                                         <div class="form-group">

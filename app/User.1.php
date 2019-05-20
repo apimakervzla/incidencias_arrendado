@@ -55,12 +55,14 @@ class User extends Authenticatable
 
     public function whatModule($user_id)
     {
-        $moduleauth= Role::select('module.id','module_option.id','module_description','icon_module','module_option_description','icon_module_option','route','correlative')
+        $moduleauth= Role::select('module.id as module_id','module_option.id as module_option_id','module_description','icon_module','module_option_description','icon_module_option','route','correlative')
                         ->join('role_user','role_user.role_id','roles.id')                        
                         ->join('authorization','authorization.role_id','role_user.role_id')                        
                         ->join('module_option','module_option.id','authorization.module_option_id')
                         ->join('module','module.id','module_option.module_id')                        
-                        ->where('role_user.user_id',$user_id)                        
+                        ->where('role_user.user_id',$user_id) 
+                        ->orderBy('correlative_module')                       
+                        ->orderBy('correlative_module_option')                       
                         ->get();        
 
         return $moduleauth;

@@ -17,7 +17,7 @@ class CreateModuleOptionTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('role_user_id')->unsigned();
             $table->bigInteger('module_id')->unsigned();            
-            $table->bigInteger('correlative');            
+            $table->bigInteger('correlative_module_option');            
             $table->mediumText('module_option_description');
             $table->mediumText('request');
             $table->longText('route');

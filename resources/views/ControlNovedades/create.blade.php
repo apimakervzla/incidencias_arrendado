@@ -188,19 +188,18 @@
 
        $(".agentes").change(function() {
           if ($(this).val()!="") {
-            $(".actores").prop('required',false);
-            $(".actoresform").hide(100);
+            $(".actores").prop('required',false);            
           }
           else{
             $(".actores").prop('required',true);
-            $(".agentes").prop('required',false);
-            $(".actoresform").show(100);
+            $(".agentes").prop('required',false);            
           }                
         });
 
        $(".nombre").blur(function() {
           if ($(this).val()!="") {
-            $(".agentes").prop('required',false);            
+            $(".agentes").prop('required',false);   
+            $(".actores").prop('required',true);         
           }
           else{
             $(".agentes").prop('required',true);          

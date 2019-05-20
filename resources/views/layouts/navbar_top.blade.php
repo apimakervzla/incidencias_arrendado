@@ -217,7 +217,7 @@
   
                   <p>
                     @php
-                        use carbon\carbon;
+                        use Carbon\Carbon;
                         $date= Carbon::parse(auth()->user()->sinceUser(auth()->user()->id));
                     @endphp
                       {{auth()->user()->name}} - {{Auth::user()->whatRole(auth()->user()->id)}}

@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+@php
+  use Carbon\Carbon;
+@endphp
 <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
@@ -59,14 +62,8 @@
                             Si
                         @endif                    
                       </td>
-                    <td>
-                        @php
-                        use carbon\carbon;
-                        $date= Carbon::parse(auth()->user()->sinceUser(auth()->user()->id));
-                    @endphp
-                      {{auth()->user()->name}} - {{Auth::user()->whatRole(auth()->user()->id)}}
-                    <small>Miembro desde </small>
-                      {{ $novedad->created_at}}
+                    <td>       
+                        {{ Carbon::parse($novedad->created_at)->format('d-m-Y') }}     
                     </td>
                     <td class="td-actions">
                       <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$novedad->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">

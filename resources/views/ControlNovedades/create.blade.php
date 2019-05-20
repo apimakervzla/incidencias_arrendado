@@ -102,7 +102,7 @@
                                         <div class="col-md-6">
                                         <div class="form-group">
                                         <label>Tipo incidencia</label>
-                                        <select name="tipo_incidencia_id" class="form-control select2" style="width: 100%;" data-placeholder="Seleccione">
+                                        <select name="tipo_incidencia_id" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">
                                         {{-- @foreach ($tipos_incidencias as $tipo_incidencia)
                                         <option value="{{$tipo_incidencia->id}}">{{$tipo_incidencia->descripcion_incidencia}}</option>    
                                             @endforeach                    --}}
@@ -110,19 +110,20 @@
                                         </div>
                                         <div class="form-group">
                                                 <label>Detalle la Incidencia</label>
-                                                <textarea id="detalle_incidencia" name="detalle_incidencia" class="form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
+                                                <textarea name="detalle_incidencia" class="incidencias form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
                                         </div>                                        
                                         <div class="form-group">
                                           <label>Agentes</label>
-                                          <select name="role_user_id_actor[]" name="role_user_id_agente" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                          <select name="role_user_id_actor[]" class="agentes incidencias form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
                                         @foreach ($agentes as $agente)
                                         <option value="{{$agente->id}}">{{$agente->name}}</option>    
                                             @endforeach                   
                                           </select>
                                         </div>
+                                        <div class="actoresform">
                                         <div class="form-group">
                                             <label>Tipos Actores</label>
-                                            <select name="tipo_actor_id" class="form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                            <select name="tipo_actor_id" class="actores incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
                                         {{-- @foreach ($tipos_actores as $tipo_actor)
                                         <option value="{{$tipo_actor->id}}">{{$tipo_actor->descripcion_tipo_actor}}</option>    
                                             @endforeach                    --}}
@@ -130,24 +131,24 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="nombreinput">Nombre</label>
-                                            <input name="nombre_actor" class="form-control" id="nombreinput" placeholder="Ingrese Nombre" type="text">
+                                            <input name="nombre_actor" class="nombre actores incidencias form-control" id="nombreinput" placeholder="Ingrese Nombre" type="text">
                                           </div>
                                           <div class="form-group">
                                               <label for="apellidoinput">Apellido</label>
-                                              <input name="apellido_actor" class="form-control" id="apellidoinput" placeholder="Ingrese Apellid" type="text">
+                                              <input name="apellido_actor" class="actores incidencias form-control" id="apellidoinput" placeholder="Ingrese Apellid" type="text">
                                             </div>
                                         <div class="form-group">
                                             <label for="documentoid">Documento de Identidad</label>
-                                            <input name="identificacion_actor" class="form-control" id="documentoid" placeholder="Ingrese Doc" type="text">
+                                            <input name="identificacion_actor" class="actores incidencias form-control" id="documentoid" placeholder="Ingrese Doc" type="text">
                                           </div>
                                         <div class="form-group">
                                             <label for="telefono">Teléfono de Contacto</label>
-                                            <input name="telefono_actor" class="form-control" id="telefono" placeholder="Ingrese tel" type="tel">
+                                            <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="tel">
                                           </div>                                       
-                                       
+                                        </div>
                                         <div class="form-group">
                                         <label for="exampleInputFile">Evidencias</label>
-                                        <input name="url_imagen[]" id="exampleInputFile" type="file" multiple>
+                                        <input name="url_imagen[]" class="incidencias" id="exampleInputFile" type="file" multiple>
                         
                                         <p class="help-block">Ingrese max 6 fotografías.</p>
                                         </div>
@@ -178,10 +179,34 @@
           $(".incidenciasform").toggle("slide");         
         if ($(this).val()!=1) {
           
+          $(".incidencias").prop('required',false);
         } else {
-          $().attr();
+          
+          $(".incidencias").prop('required',true);
         }
        });
+
+       $(".agentes").change(function() {
+          if ($(this).val()!="") {
+            $(".actores").prop('required',false);
+            $(".actoresform").hide(100);
+          }
+          else{
+            $(".actores").prop('required',true);
+            $(".agentes").prop('required',false);
+            $(".actoresform").show(100);
+          }                
+        });
+
+       $(".nombre").blur(function() {
+          if ($(this).val()!="") {
+            $(".agentes").prop('required',false);            
+          }
+          else{
+            $(".agentes").prop('required',true);          
+          }                
+        });
+
    
        //Datemask dd/mm/yyyy
        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })

@@ -41,12 +41,40 @@ Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(fu
     Route::post('/novedadnew', 'Novedades\NovedadesController@store')->name('store.novedades');
     Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');       
     
-    Route::post('/agentesturnosnew', 'Novedades\NovedadesController@agentesturnosstore')->name('store.agentes_turnos');    
+    Route::post('/agentesturnosnew', 'AgentesTurnos\AgentesTurnosController@store')->name('store.agentes_turnos');    
     
     // Route::get('/hola', function () {
     //     return view('ControlNovedades.create');
     // });
 
     //FIN MODULO CONTROL NOVEDADES
+
+
+    //MODULO INCIDENCIAS
+
+    Route::get('/incidenciasall', 'Incidencias\IncidenciasController@index')->name('index.incidencias');
+    Route::get('/incidencias', 'Incidencias\IncidenciasController@create')->name('create.incidencias');
+    Route::post('/incidencianew', 'Incidencias\IncidenciasController@store')->name('store.incidencias');
+    Route::get('/incidencias/{novedad_id}', 'Incidencias\IncidenciasController@show')->name('show.incidencias');   
+    
+    // Route::get('/hola', function () {
+    //     return view('ControlNovedades.create');
+    // });
+
+    //FIN MODULO INCIDENCIAS
+
+
+    //MODULO LOST FOUND
+
+    Route::get('/lostfoundall', 'LostFound\LostFoundController@index')->name('index.lostfound');
+    Route::get('/lostfound', 'LostFound\LostFoundController@create')->name('create.lostfound');
+    Route::post('/lostfoundnew', 'LostFound\LostFoundController@store')->name('store.lostfound');
+    Route::get('/lostfound/{novedad_id}', 'LostFound\LostFoundController@show')->name('show.lostfound');   
+    
+    // Route::get('/hola', function () {
+    //     return view('ControlNovedades.create');
+    // });
+
+    //FIN MODULO LOST FOUND
 });
 

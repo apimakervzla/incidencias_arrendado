@@ -33,8 +33,11 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>Incidencias</a>
+  <div class="login-logo">        
+    <a href="../../index2.html">
+      <b>Admin</b>Incidencias</a><br>
+      <!-- <img src="{{ asset("dist/img/DHO22-04.png")}}" class="img-circle" alt="User Image"> -->
+      <!-- <img src="{{ asset("dist/img/DHO22-04.png")}}" class="img" alt="User Image" style="width:50%;"> -->
   </div>
             @yield('content')
         </div>

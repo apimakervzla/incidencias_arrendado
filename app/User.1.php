@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Role;
+use App\Turno;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -55,7 +56,31 @@ class User extends Authenticatable
 
     public function whatModule($user_id)
     {
-        $moduleauth= Role::select('module.id as module_id','module_option.id as module_option_id','module_description','icon_module','module_option_description','icon_module_option','route','correlative')
+        $moduleauth= Role::select('module.id as module_id','module_option.id as module_option_id','module_description','icon_module','module_option_description','icon_module_option','route','correlative_module')
+                        ->join('role_user','role_user.role_id','roles.id')                        
+                        ->join('tbl_turnos','authorization.role_id','role_user.role_id')                        
+                        ->join('module_option','module_option.id','authorization.module_option_id')
+                        ->join('module','module.id','module_option.module_id')                        
+                        ->where('role_user.user_id',$user_id) 
+                        ->orderBy('correlative_module')                       
+                        ->orderBy('correlative_module_option')                       
+                        ->get();        
+
+        return $moduleauth;
+    }
+    public function turno($user_id)
+    {
+        $turno_actual=Role::select('')
+                    ->join('role_user','role_user.role_id','roles.id')                        
+                    // ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                        
+                    // ->join('module_option','module_option.id','authorization.module_option_id')
+                    // ->join('module','module.id','module_option.module_id')                        
+                    // ->where('role_user.user_id',$user_id) 
+                    // ->orderBy('correlative_module')                       
+                    // ->orderBy('correlative_module_option')                       
+                    ->get(); 
+        dd($turno_actual);
+        $turno= Role::select('')
                         ->join('role_user','role_user.role_id','roles.id')                        
                         ->join('authorization','authorization.role_id','role_user.role_id')                        
                         ->join('module_option','module_option.id','authorization.module_option_id')

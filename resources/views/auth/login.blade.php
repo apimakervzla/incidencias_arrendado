@@ -2,7 +2,11 @@
 
 @section('content')
   <div class="login-box-body">
-    <p class="login-box-msg">Autentícate para iniciar sesión</p>
+    <p class="login-box-msg">
+      <!-- Autentícate para iniciar sesión -->
+    <img src="{{ asset("dist/img/DHO22-04.png")}}" class="img" alt="User Image" style="width:80%;">
+    </p>
+    
 
     <form action="{{ route('login') }}" method="POST">
             @csrf

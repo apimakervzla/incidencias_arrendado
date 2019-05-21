@@ -20,8 +20,10 @@ class TblActores extends Migration
             $table->mediumText('apellido_actor');
             $table->mediumText('identificacion_actor');
             $table->bigInteger('telefono_actor');
+            $table->mediumText('numero_habitacion')->nullable();
+            $table->mediumText('correo_electronico_actor')->nullable();
             $table->timestamps();
-
+            
             $table->foreign('tipo_actor_id')->references('id')->on('tbl_tipos_actores')->onDelete('restrict');
         });
     }

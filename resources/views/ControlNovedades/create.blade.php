@@ -1,16 +1,17 @@
 @extends('layouts.admin')
 @section('link_back', url('novedadessall'))
 @section('content')
+
 <section class="content-header">
         <h1>
-          Advanced Form Elements
-          <small>Preview</small>
+          Control de Novedades
+          <!-- <small>Preview</small> -->
         </h1>
-        <ol class="breadcrumb">
+        <!-- <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="#">Forms</a></li>
           <li class="active">Advanced Elements</li>
-        </ol>
+        </ol> -->
 </section>
 <section class="content">
 
@@ -18,7 +19,10 @@
         <div class="box box-success">
           <div class="box-header with-border">
             <h3 class="box-title">Agentes de Turno</h3>
-  
+            
+                @include('flash::message')
+                
+            
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
               {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
@@ -33,7 +37,7 @@
                 {{-- @if ($agentes_turnos=="") --}}
                 <div class="form-group">
                     <label>Agentes</label>
-                    <select name="role_user_id_agente[]" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                    <select name="role_user_id_agente[]" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true" required >
                   @foreach ($agentes as $agente)
                   <option value="{{$agente->id}}">{{$agente->name}}</option>    
                       @endforeach                   
@@ -66,12 +70,17 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body" >                        
-                        <form method="POST" role="form" action="{{ route("store.novedades")}}">
+                        <form method="POST" role="form" action="{{ route("store.novedades")}}" enctype="multipart/form-data" >
                           @csrf
                             <!-- textarea -->
                             <div class="form-group">
                               <label>Detalle la Novedad</label>
                               <textarea name="descripcion_novedad" class="form-control" rows="3" placeholder="Escriba aquí ..." required></textarea>
+                              @error('descripcion_novedad')
+                                  <span class="invalid-feedback" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                  </span>
+                              @enderror
                             </div>
 
                             <!-- radio -->
@@ -101,11 +110,11 @@
                                       <div class="row">
                                         <div class="col-md-6">
                                         <div class="form-group">
-                                        <label>Tipo incidencia</label>
-                                        <select name="tipo_incidencia_id" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">
-                                        {{-- @foreach ($tipos_incidencias as $tipo_incidencia)
-                                        <option value="{{$tipo_incidencia->id}}">{{$tipo_incidencia->descripcion_incidencia}}</option>    
-                                            @endforeach                    --}}
+                                        <label>Tipo incidencia</label>                                        
+                                        <select name="tipo_incidencia_id" id="tipo_incidencia_id" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">                                        
+                                        @foreach ($tipos_incidencias as $tipo_incidencia)
+                                        <option value="{{$tipo_incidencia->id}}">{{$tipo_incidencia->descripcion_tipo_incidencia}}</option>    
+                                        @endforeach                    
                                         </select>
                                         </div>
                                         <div class="form-group">
@@ -123,10 +132,11 @@
                                         <div class="actoresform">
                                         <div class="form-group">
                                             <label>Tipos Actores</label>
-                                            <select name="tipo_actor_id" class="actores incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                        {{-- @foreach ($tipos_actores as $tipo_actor)
+                                            <select name="tipo_actor_id" id="tipo_actor_id" class="actores incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                            <option value="">Seleccione...</option>
+                                            @foreach ($tipos_actores as $tipo_actor)
                                         <option value="{{$tipo_actor->id}}">{{$tipo_actor->descripcion_tipo_actor}}</option>    
-                                            @endforeach                    --}}
+                                            @endforeach                    
                                           </select>
                                         </div>
                                         <div class="form-group">
@@ -144,7 +154,16 @@
                                         <div class="form-group">
                                             <label for="telefono">Teléfono de Contacto</label>
                                             <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="tel">
-                                          </div>                                       
+                                            @error('telefono_actor')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>                                       
+                                        <div class="form-group">
+                                            <label for="telefono">N° Habitación</label>
+                                            <input name="numero_habitacion" class="numero_habitacion incidencias form-control" id="numero_habitacion" placeholder="Ingrese Número Hab." type="text">
+                                        </div>                                       
                                         </div>
                                         <div class="form-group">
                                         <label for="exampleInputFile">Evidencias</label>
@@ -196,15 +215,35 @@
           }                
         });
 
-       $(".nombre").blur(function() {
-          if ($(this).val()!="") {
-            $(".agentes").prop('required',false);   
-            $(".actores").prop('required',true);         
+       $("#tipo_actor_id").change
+       (
+          function() 
+          {
+            //pongo a false a todos
+            $("#nombreinput,#apellidoinput,#documentoid,#numero_habitacion").prop('required',false); 
+            switch($(this).val())
+            {
+                case "1"://huesped                  
+                    //Pongo requerido a nombre apellido cedula y # hab sea obligatorio
+                    $("#nombreinput,#apellidoinput,#documentoid,#numero_habitacion").prop('required',true);
+                break;
+
+                default:                
+                    //Valido que nom ape y ci sea obligatorio
+                    $("#nombreinput,#apellidoinput,#documentoid").prop('required',true);
+                break;
+            }            
           }
-          else{
-            $(".agentes").prop('required',true);          
-          }                
-        });
+        );
+
+      //  $(".nombre").blur(function() {
+      //     if ($(this).val()!="") {
+      //       $(".agentes").prop('required',false);            
+      //     }
+      //     else{
+      //       $(".agentes").prop('required',true);          
+      //     }                
+      //   });
 
    
        //Datemask dd/mm/yyyy

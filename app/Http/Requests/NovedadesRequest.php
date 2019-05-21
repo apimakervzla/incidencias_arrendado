@@ -25,6 +25,7 @@ class NovedadesRequest extends FormRequest
     {
         return [
             'descripcion_novedad'      =>  'required|min:1|max:500'
+            //'telefono_actor'      =>  'integer|min:11|max:11'
             //'email'     =>  'required|min:5|max:250|unique:users',
             //'password'  =>  'required|min:5|max:250'
         ];

@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ModuleOptionSeeder::class);
         $this->call(AuthorizationSeeder::class);
         $this->call(AuditSeeder::class);
+        $this->call(TiposTurnosSeeder::class);
+        $this->call(TurnosSeeder::class);
     }
 }

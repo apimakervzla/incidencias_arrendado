@@ -14,10 +14,21 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                   Bienvenido
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('scripts')
+<script>  
+$(document).ready(function() {
+
+    if($("#valores").val()==1){
+        // alert("hola");
+        $("#logout-form").submit();        
+    }
+} );
+</script>
+@endpush

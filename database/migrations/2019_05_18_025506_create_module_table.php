@@ -16,7 +16,6 @@ class CreateModuleTable extends Migration
         Schema::create('module', function (Blueprint $table) {
             $table->bigIncrements('id');            
             $table->mediumText('module_description');
-            $table->bigInteger('correlative_module');            
             $table->mediumText('request');
             $table->mediumText('icon_module');
             $table->timestamps();

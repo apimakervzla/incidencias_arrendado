@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="{{ asset("css/bootstrap/all.css")}}">
   <link rel="stylesheet" href="{{ asset("css/bootstrap/bootstrap-colorpicker.min.css")}}">
   <link rel="stylesheet" href="{{ asset("css/bootstrap/bootstrap-timepicker.min.css")}}">
-  <link rel="stylesheet" href="{{ asset("css/dataTables.bootstrap.min.css")}}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset("dist/css/AdminLTE.min.css")}}">
@@ -96,7 +95,6 @@
 <script src="{{ asset("js/fastclick.js")}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset("js/adminlte.min.js")}}"></script>
-<script src="{{ asset("js/jquery.dataTables.min.js")}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset("js/demo.js")}}"></script>
 <!-- jvectormap  -->

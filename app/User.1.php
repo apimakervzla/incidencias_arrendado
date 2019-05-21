@@ -188,7 +188,7 @@ class User extends Authenticatable
                             $turno->status_turno=0;            
                             $turno->save();
 
-                            Mail::to($solicitud->email)->send(new Novedades($request));
+                            // Mail::to($destinatario->email)->send(new NovedadesMail($datos));
 
                             $turno=1;                                            
                         }

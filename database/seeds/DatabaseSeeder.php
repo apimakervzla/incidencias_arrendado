@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AuditSeeder::class);
         $this->call(TiposTurnosSeeder::class);
         $this->call(TurnosSeeder::class);
+        $this->call(TiposActoresSeeder::class);
     }
 }

@@ -49,21 +49,27 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {{-- dd($lostfound) --}}
-                @foreach($lostfound as $incidencia)
+                  {{-- {{ dd($lostfound) }}  --}}
+                @foreach($lostfound as $valor)
                 <tr>
                     <td>
-                        {{ $lostfound->descripcion_lostfound }}
+                        {{ $valor->descripcion_lostfound }}
                     </td>
                     
                     <td>
-                     {{ $lostfound->name }}
+                     {{ $valor->name }}
                     </td>
                     <td>
-                        {{ $lostfound->identificacion_actor }} - {{ $lostfound->nombre_actor }} {{ $lostfound->apellido_actor }}  
-                        <i class="fa fa-gears"></i>{{ $lostfound->numero_habitacion }}
-                        <i class="fa fa-gears"></i>{{ $lostfound->telefono_actor }}
-                        <i class="fa fa-gears"></i>{{ $lostfound->correo_electronico_actor }}
+                        <b>{{ $valor->tipo_actor }}</b>
+                        <br>
+                        <i title="Actor" class="fa fa-user"></i>
+                        {{ $valor->identificacion_actor }} - {{ $valor->nombre_actor }} {{ $valor->apellido_actor }}  
+                        <br>
+                        <i title="N° Habitación" class="fa fa-bed"></i>{{ $valor->numero_habitacion }}
+                        <br>
+                        <i title="Teléfono" class="fa fa-phone"></i>{{ $valor->telefono_actor }}
+                        <br>
+                        <i title="Correo Electrónico" class="fa fa-envelope"></i>{{ $valor->correo_electronico_actor }}
                     </td>
                     
                     
@@ -72,16 +78,24 @@
                     </td> -->
                     
                     <td>                       
-                       {{ Carbon::parse($incidencia->created_at)->format('d-m-Y') }}    
+                       {{ Carbon::parse($valor->created_at)->format('d-m-Y') }}    
                        -
                         <b>
-                        {{ Carbon::parse($incidencia->created_at)->format('h:i:s') }}     
+                        {{ Carbon::parse($valor->created_at)->format('h:i:s') }}     
                         </b> 
                     </td>
 
+                    <td>                       
+                      {{ Carbon::parse($valor->fecha_vencimiento_lost_found)->format('d-m-Y') }}    
+                      -
+                       <b>
+                       {{ Carbon::parse($valor->fecha_vencimiento_lost_found)->format('h:i:s') }}     
+                       </b> 
+                   </td>
+
 
                     <td class="td-actions">
-                      <!-- <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$incidencia->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
+                      <!-- <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$valor->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
                         <i class="fa fa-pencil"></i>
                       </button>                                                  -->
                     </td>

@@ -101,6 +101,19 @@
               </ul>
             </li>
 
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-files-o"></i>
+                <span>Control Lost&Found</span>
+                <!-- <span class="pull-right-container">
+                  <span class="label label-primary pull-right">4</span>
+                </span> -->
+              </a>
+              <ul class="treeview-menu">
+              <li><a href="{{ route("index.lostfound")}}"><i class="fa fa-circle-o"></i>Ver Lost&Found</a></li>               
+              </ul>
+            </li>
+
             <!-- <li>
               <a href="pages/widgets.html">
                 <i class="fa fa-th"></i> <span>Widgets</span>

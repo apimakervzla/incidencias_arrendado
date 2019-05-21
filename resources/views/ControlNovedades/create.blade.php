@@ -123,7 +123,8 @@
                                         </div>                                        
                                         <div class="form-group">
                                           <label>Agentes</label>
-                                          <select name="role_user_id_actor[]" class="agentes incidencias form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                          <!-- <select name="role_user_id_actor[]" class="agentes incidencias form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true"> -->
+                                          <select name="role_user_id_actor" class="agentes incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">                                          
                                         @foreach ($agentes as $agente)
                                         <option value="{{$agente->id}}">{{$agente->name}}</option>    
                                             @endforeach                   

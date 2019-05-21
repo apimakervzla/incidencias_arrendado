@@ -51,7 +51,6 @@ class NovedadesController extends Controller
                     ->get();
         }
 
-        $turno=$this->consultar_turno();            
         //dd($resultado);
         //flash('BIENVENIDOS AL SISTEMA');
         return view('ControlNovedades.index',

@@ -18,7 +18,7 @@ class TblNovedades extends Migration
             $table->longText('descripcion_novedad');
             $table->boolean('incluir_incidencia')->default('0');
             $table->BigInteger('incidencia_id')->nullable();
-            $table->BigInteger('turno_id')->nullable();
+            $table->unsignedBigInteger('turno_id');
             $table->unsignedBigInteger('role_user_id');
             $table->timestamps();
             

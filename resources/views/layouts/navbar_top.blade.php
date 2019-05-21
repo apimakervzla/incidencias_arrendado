@@ -9,10 +9,10 @@
           <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
             <li class="dropdown messages-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-envelope-o"></i>
                 <span class="label label-success">4</span>
-              </a>
+              </a> -->
               <ul class="dropdown-menu">
                 <li class="header">You have 4 messages</li>
                 <li>
@@ -86,10 +86,10 @@
             </li>
             <!-- Notifications: style can be found in dropdown.less -->
             <li class="dropdown notifications-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-bell-o"></i>
                 <span class="label label-warning">10</span>
-              </a>
+              </a> -->
               <ul class="dropdown-menu">
                 <li class="header">You have 10 notifications</li>
                 <li>
@@ -128,10 +128,10 @@
             </li>
             <!-- Tasks: style can be found in dropdown.less -->
             <li class="dropdown tasks-menu">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-flag-o"></i>
                 <span class="label label-danger">9</span>
-              </a>
+              </a> -->
               <ul class="dropdown-menu">
                 <li class="header">You have 9 tasks</li>
                 <li>
@@ -217,7 +217,7 @@
   
                   <p>
                     @php
-                        use carbon\carbon;
+                        use Carbon\Carbon;
                         $date= Carbon::parse(auth()->user()->sinceUser(auth()->user()->id));
                     @endphp
                       {{auth()->user()->name}} - {{Auth::user()->whatRole(auth()->user()->id)}}
@@ -225,7 +225,7 @@
                   </p>
                 </li>
                 <!-- Menu Body -->
-                <li class="user-body">
+                <!-- <li class="user-body">
                   <div class="row">
                     <div class="col-xs-4 text-center">
                       <a href="#">Followers</a>
@@ -237,13 +237,13 @@
                       <a href="#">Friends</a>
                     </div>
                   </div>
-                  <!-- /.row -->
-                </li>
+                  
+                </li> -->
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                  <div class="pull-left">
+                  <!-- <div class="pull-left">
                     <a href="#" class="btn btn-default btn-flat">Profile</a>
-                  </div>
+                  </div> -->
                   <div class="pull-right">
                       <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
                       onclick="event.preventDefault();
@@ -257,7 +257,7 @@
             </li>
             <!-- Control Sidebar Toggle Button -->
             <li>
-              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              <!-- <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a> -->
             </li>
           </ul>
         </div>

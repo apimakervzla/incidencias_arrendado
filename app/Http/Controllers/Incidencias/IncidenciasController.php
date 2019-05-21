@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Novedades;
+namespace App\Http\Controllers\Incidencias;
 
-use App\Novedades;
+use App\Incidencias;
+
+
 use App\User;
 use App\Audit;
-use App\Incidencias;
 use App\Actores;
 use App\Turnos;
 use App\Tiposincidencias;
 use App\TiposActores;
 
 
-
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\NovedadesRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
-class NovedadesController extends Controller
+
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+class IncidenciasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,38 +29,28 @@ class NovedadesController extends Controller
      */
     public function index()
     {
-        //dd("hola");
-        // $Obj_Novedades=new Novedades();
-        // $resultado=$Obj_Novedades->orderBy("id","DESC")->paginate(5);
-        // dd($resultado);
+        //
+        //echo "jajjaa";exit;
+        $resultado= Incidencias::select('tbl_incidencias.id','tbl_incidencias.role_user_id','tbl_incidencias.created_at',
+                            'tbl_incidencias.tipo_incidencia_id','tbl_incidencias.role_user_id_actor',
+                            'tbl_incidencias.actor_id','tbl_incidencias.url_imagen_1','tbl_incidencias.url_imagen_2',
+                            'tbl_incidencias.url_imagen_3','tbl_incidencias.url_imagen_4','tbl_incidencias.url_imagen_5',
+                            'tbl_incidencias.url_imagen_6','tbl_incidencias.detalle_incidencia','tbl_tipos_incidencias.descripcion_tipo_incidencia',
+                            'users.name','roles.description','tbl_tipos_actores.descripcion_tipo_actor',
+                            'tbl_actores.nombre_actor','tbl_actores.apellido_actor','tbl_actores.telefono_actor','tbl_actores.numero_habitacion',
+                            'tbl_actores.identificacion_actor')
+                  ->Join('tbl_tipos_incidencias','tbl_tipos_incidencias.id','tbl_incidencias.tipo_incidencia_id')                                    
+                  ->leftJoin('role_user','role_user.id','tbl_incidencias.role_user_id_actor')                  
+                  ->leftJoin('users','users.id','role_user.user_id')                  
+                  ->leftJoin('roles','roles.id','role_user.role_id')                  
+                  ->leftJoin('tbl_actores','tbl_actores.id','tbl_incidencias.actor_id')                  
+                  ->leftJoin('tbl_tipos_actores','tbl_tipos_actores.id','tbl_actores.tipo_actor_id')                  
+                  
+                  //->where('tbl_novedades.turno_id',$turno_id)
+                  ->get();
 
-        //Consulto el turno_id
-        $turno=$this->consultar_turno();
-
-        $resultado=array();
-        if( $turno->count() > 0)
-        {
-            //consulto las novedades  
-            $Obj_Novedades=new Novedades()                ;
-            $resultado= $Obj_Novedades//->select('tbl_novedades.descripcion_novedad')
-                    ->Join('tbl_turnos','tbl_turnos.id','tbl_novedades.turno_id')                  
-                    ->Join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                  
-                    ->Join('role_user','role_user.id','tbl_novedades.role_user_id')                  
-                    ->Join('roles','roles.id','role_user.role_id')                  
-                    ->Join('users','users.id','role_user.user_id')                  
-                    ->where('tbl_novedades.turno_id',$turno[0]->id)
-                    ->get();
-        }
-
-        $turno=$this->consultar_turno();            
         //dd($resultado);
-        //flash('BIENVENIDOS AL SISTEMA');
-        return view('ControlNovedades.index',
-        [
-            'novedades'=>$resultado,
-            'turno'=>$turno
-        ]
-        );//->with('novedades',$resultado);
+        return view('Incidencias.index')->with('incidencias',$resultado);
     }
 
     /**
@@ -77,14 +68,13 @@ class NovedadesController extends Controller
 
         $tipos_incidencias= Tiposincidencias::all();
         $tipos_actores= TiposActores::all();
-        
-        return view('ControlNovedades.create',
+        return view('Incidencias.create',
             [
                 'agentes'=>$agentes,
                 'tipos_incidencias'=>$tipos_incidencias,
                 'tipos_actores'=>$tipos_actores
             ]
-        );
+        );        
     }
 
     /**
@@ -94,26 +84,21 @@ class NovedadesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    //public function store(NovedadesRequest $request)
-    {  
-        //$this->validateNovedades($request);
+    {
         //dd($request);
         //Consulto el turno_id
-        $turno=$this->consultar_turno();            
-        if($turno->count() <= "0" )
-        {            
-            flash("El Supervisor No Posee Turno Activo. Ingrese Nuevamente al Sistema")->error();    
-            return redirect()->route('index.novedades');                
-        }
+        // $turno=$this->consultar_turno();            
+        // if($turno->count() <= "0" )
+        // {            
+        //     flash("El Supervisor No Posee Turno Activo. Ingrese Nuevamente al Sistema")->error();    
+        //     return redirect()->route('index.novedades');                
+        // }
         
         //Creo el Obj auditoria para registrar las auditorias de los insert
         $auditoria = new Audit();     
         
-        //Creo el objeto novedades
-        $Obj_Novedades=new Novedades($request->all()); 
         
-        //Valido si la notificación genera incidencia        
-        if ($request["incidencia_id"]==true) 
+        if (true)//($request["incidencia_id"]==true) 
         {            
             //Como genera incidencia, creo el objeto de incidencia
             $Obj_Incidencias=new Incidencias($request->all());    
@@ -187,8 +172,7 @@ class NovedadesController extends Controller
             $Obj_Incidencias->url_imagen_6=(isset($aux_archivo_img[5]) && $aux_archivo_img[5]!="")?$aux_archivo_img[0]:"";
             $Obj_Incidencias->save();
 
-            //Seteo el campo incidencia_id de la tbl_novedades
-            $Obj_Novedades->incidencia_id=$Obj_Incidencias->id;      
+               
             
             //Seteo el role_user_id para el registro de la auditoria de creacion de incidencia
             $auditoria->role_user_id = Auth::id();
@@ -196,29 +180,20 @@ class NovedadesController extends Controller
             $auditoria->save();
         }    
         
-        //Seteo role_user_id para cargar la novedad
-        $Obj_Novedades->role_user_id=Auth::id();      
-        $Obj_Novedades->turno_id=$turno[0]->id;
-        $Obj_Novedades->incluir_incidencia=($request["incidencia_id"])?"1":"0";        
-        $Obj_Novedades->save();        
-
-        //Seteo el role_user_id para el registro de la auditoria de creacion de incidencia
-        $auditoria->role_user_id = Auth::id();        
-        $auditoria->action = "Se creó La Novedad:".$request["descripcion_novedad"].", por: ".Auth::user()->name;        
-        $auditoria->save();
+        
        
         //Retorno Msj de Exito                
-        flash("Se ha Registrado La Novedad de forma Exitosa")->success();    
-        return redirect()->route('index.novedades');                
+        flash("Se ha Registrado La Incidencia de forma Exitosa")->success();    
+        return redirect()->route('index.incidencias'); 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Novedades  $novedades
+     * @param  \App\TblIncidencias  $tblIncidencias
      * @return \Illuminate\Http\Response
      */
-    public function show(Novedades $novedades)
+    public function show(TblIncidencias $tblIncidencias)
     {
         //
     }
@@ -226,10 +201,10 @@ class NovedadesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Novedades  $novedades
+     * @param  \App\TblIncidencias  $tblIncidencias
      * @return \Illuminate\Http\Response
      */
-    public function edit(Novedades $novedades)
+    public function edit(TblIncidencias $tblIncidencias)
     {
         //
     }
@@ -238,10 +213,10 @@ class NovedadesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Novedades  $novedades
+     * @param  \App\TblIncidencias  $tblIncidencias
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Novedades $novedades)
+    public function update(Request $request, TblIncidencias $tblIncidencias)
     {
         //
     }
@@ -249,45 +224,11 @@ class NovedadesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Novedades  $novedades
+     * @param  \App\TblIncidencias  $tblIncidencias
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Novedades $novedades)
+    public function destroy(TblIncidencias $tblIncidencias)
     {
         //
     }
-
-    public function consultar_turno()
-    {
-        //Consulto el Role User del usurio logeado
-        //$role_user=Auth::user()->whatRoleUser(Auth::user()->id);
-        //dd($role_user);
-
-        $Obj_Turnos= new Turnos()   ;
-        $turno= $Obj_Turnos->select('tbl_turnos.id','tbl_turnos.role_user_id','tbl_turnos.tipo_turno_id','tbl_tipos_turnos.descripcion_turno')                  
-                ->Join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                  
-                ->Join('role_user','role_user.id','tbl_turnos.role_user_id')                  
-                ->Join('roles','roles.id','role_user.role_id')                  
-                ->Join('users','users.id','role_user.user_id')                  
-                ->where(
-                    [
-                        ['tbl_turnos.role_user_id',Auth::user()->id],
-                        ['tbl_turnos.status_turno',"1"]
-                    ]
-                )
-                ->orderby('tbl_turnos.id','DESC')->take(1)
-                ->get(); 
-        //dd($turno);
-        return $turno;
-    }
-
-    protected function validateNovedades(Request $request)
-    {
-        $request->validate([
-            'descripcion_novedad' => 'required|string',
-            'telefono_actor' => 'integer',
-        ]);
-    }
-
-    
 }

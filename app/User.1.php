@@ -53,6 +53,29 @@ class User extends Authenticatable
         return $rolename->description;
     }
 
+    public function whatRoleUser($user_id)
+    {
+        $Obj_Role= new Role();
+        $rolename= $Obj_Role//->select('description')
+                        ->join('role_user','role_user.role_id','roles.id')                        
+                        ->where('role_user.user_id',$user_id)
+                        ->first();        
+        return $rolename;
+    }
+
+    public function whatModule($user_id)
+    {
+        $moduleauth= Role::select('module.id','module_option.id','module_description','icon_module','module_option_description','icon_module_option','route','correlative')
+                        ->join('role_user','role_user.role_id','roles.id')                        
+                        ->join('authorization','authorization.role_id','role_user.role_id')                        
+                        ->join('module_option','module_option.id','authorization.module_option_id')
+                        ->join('module','module.id','module_option.module_id')                        
+                        ->where('role_user.user_id',$user_id)                        
+                        ->get();        
+
+        return $moduleauth;
+    }
+
     public function sinceUser($user_id)
     {
         $since= Role::select('role_user.created_at')

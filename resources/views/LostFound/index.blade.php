@@ -7,12 +7,12 @@
 <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-              <strong class="card-title">Lista de Incidencias</strong>
-            <a href="{{ route('create.incidencias')}}" class="card-category">
+              <strong class="card-title">Lista de Lost&Found</strong>
+            <a href="{{ route('create.lostfound')}}" class="card-category">
             <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" class="btn btn-white btn-link btn-sm" data-original-title="Agregar">
                 <i class="fa fa-plus"></i>
             </button>
-             Agregar Incidencia</a>
+             Agregar Lost Found</a>
              <div class="container">
                 @include('flash::message')                
             </div>
@@ -24,22 +24,15 @@
                 <thead>
                   <tr>
                     <th>
-                      Detalle
+                      Descripción
                     </th>
-                    <th>
-                      Tipo
-                    </th>
+                    
                     <th>
                       Agente
                     </th>
+
                     <th>
                       Actor
-                    </th>
-                    <th>
-                      Teléfono
-                    </th>
-                    <th>
-                      N° Habitación
                     </th>
                     <!-- <th>
                         Imagenes
@@ -48,34 +41,31 @@
                       Fecha Creacion
                     </th> 
                     <th>
+                      Fecha Vencimiento
+                    </th> 
+                    <th>
                         Acciones
                     </th>                
                   </tr>
                 </thead>
                 <tbody>
-                  {{-- dd($incidencias) --}}
-                @foreach($incidencias as $incidencia)
+                  {{-- dd($lostfound) --}}
+                @foreach($lostfound as $incidencia)
                 <tr>
                     <td>
-                        {{ $incidencia->detalle_incidencia }}
+                        {{ $lostfound->descripcion_lostfound }}
+                    </td>
+                    
+                    <td>
+                     {{ $lostfound->name }}
                     </td>
                     <td>
-                      {{ $incidencia->descripcion_tipo_incidencia }}
+                        {{ $lostfound->identificacion_actor }} - {{ $lostfound->nombre_actor }} {{ $lostfound->apellido_actor }}  
+                        <i class="fa fa-gears"></i>{{ $lostfound->numero_habitacion }}
+                        <i class="fa fa-gears"></i>{{ $lostfound->telefono_actor }}
+                        <i class="fa fa-gears"></i>{{ $lostfound->correo_electronico_actor }}
                     </td>
-                    <td>
-                     {{ $incidencia->name }}
-                    </td>
-                    <td>
-                        {{ $incidencia->identificacion_actor }}    -     
-                        {{ $incidencia->nombre_actor }}         
-                        {{ $incidencia->apellido_actor }}         
-                    </td>
-                    <td>
-                        {{ $incidencia->telefono_actor }}
-                    </td>
-                    <td>
-                        {{ $incidencia->numero_habitacion }}
-                    </td>
+                    
                     
                     <!-- <td>
                         Imagenmes                        

@@ -1,18 +1,24 @@
 @extends('layouts.admin')
 
 @section('content')
+@php
+  use Carbon\Carbon;
+@endphp
 <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
               <strong class="card-title">Lista de Novedades</strong>
+              - Turno:
+              <strong class="card-title">{{$turno[0]->descripcion_turno}}</strong>
             <a href="{{ route('create.novedades')}}" class="card-category">
             <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" class="btn btn-white btn-link btn-sm" data-original-title="Agregar">
                 <i class="fa fa-plus"></i>
             </button>
              Agregar Novedad</a>
-             <div class="container">
+             
                 @include('flash::message')
-            </div>
+                
+            
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -24,11 +30,12 @@
                       Turno
                     </th>
                     <th>
-                      Nombres
-                    </th>
-                    <th>
                       Rol
                     </th>
+                    <th>
+                      Nombres
+                    </th>
+                    
                     <th>
                         Incidencia
                     </th>
@@ -40,18 +47,21 @@
                     </th>                
                   </tr>
                 </thead>
-                <tbody>
-                  @foreach($novedades as $novedad)
-                  <tr>
+                <tbody>                  
+                @foreach($novedades as $novedad)
+                <tr>
                     <td>
                         {{ $novedad->descripcion_turno }}
                     </td>
+
                     <td>
-                      {{ $novedad->name }}
+                       <b>{{ $novedad->description }}:</b> {{$novedad->name}}
                     </td>
+
                     <td>
-                       {{ $novedad->description }}
+                      {{ $novedad->descripcion_novedad }}
                     </td>
+                    
                     <td>
                         @if ($novedad->incluir_incidencia==0)
                             No
@@ -59,22 +69,20 @@
                             Si
                         @endif                    
                       </td>
-                    <td>
-                        @php
-                        use carbon\carbon;
-                        $date= Carbon::parse(auth()->user()->sinceUser(auth()->user()->id));
-                    @endphp
-                      {{auth()->user()->name}} - {{Auth::user()->whatRole(auth()->user()->id)}}
-                    <small>Miembro desde </small>
-                      {{ $novedad->created_at}}
+                    <td>       
+                        {{ Carbon::parse($novedad->created_at)->format('d-m-Y') }}     
+                        -
+                        <b>
+                        {{ Carbon::parse($novedad->created_at)->format('h:i:s') }}     
+                        </b>
                     </td>
                     <td class="td-actions">
-                      <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$novedad->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
-                        <i<i class="fa fa-pencil"></i>
-                      </button>                                                 
+                      <!-- <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$novedad->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
+                        <i class="fa fa-pencil"></i>
+                      </button>                                                  -->
                     </td>
                   </tr>
-                  @endforeach
+                @endforeach                    
                 </tbody>
               </table>
             </div>

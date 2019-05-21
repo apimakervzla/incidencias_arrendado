@@ -15,7 +15,7 @@ class TblTiposActores extends Migration
     {
         Schema::create('tbl_tipos_actores', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->mediumText('descripcion_tipo_actores');
+            $table->mediumText('descripcion_tipo_actor');
             $table->timestamps();
         });
     }

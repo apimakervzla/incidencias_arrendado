@@ -77,9 +77,7 @@ class User extends Authenticatable
                         ->join('tbl_turnos','authorization.role_id','role_user.role_id')                        
                         ->join('module_option','module_option.id','authorization.module_option_id')
                         ->join('module','module.id','module_option.module_id')                        
-                        ->where('role_user.user_id',$user_id) 
-                        ->orderBy('correlative_module')                       
-                        ->orderBy('correlative_module_option')                       
+                        ->where('role_user.user_id',$user_id)                        
                         ->get();        
 
         return $moduleauth;

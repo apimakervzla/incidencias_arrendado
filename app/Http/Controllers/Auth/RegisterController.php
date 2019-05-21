@@ -115,7 +115,7 @@ class RegisterController extends Controller
     {
         $roles = Role::get();
  
-        return view('usuarios.register',['roles'=>$roles]);
+        return view('auth.register',['roles'=>$roles]);
     }
 
     public function edit($user_id)
@@ -128,7 +128,7 @@ class RegisterController extends Controller
         $roles = Role::get();        
         // dd($user->role_id);        
 
-        return view('usuarios.edit',['user'=>$user,'roles'=>$roles]);
+        return view('auth.edit',['user'=>$user,'roles'=>$roles]);
     }
 
     public function update(Request $request,$user_id)
@@ -169,7 +169,7 @@ class RegisterController extends Controller
                     ->get();       
 
         // dd($usuarios);
-        return view('usuarios.index',['usuarios'=>$usuarios]);        
+        return view('auth.index',['usuarios'=>$usuarios]);        
     }
 
     public function destroy($user_id)

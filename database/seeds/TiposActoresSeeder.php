@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\TiposActores;
+use Illuminate\Database\Seeder;
+
 class TiposActoresSeeder extends Seeder
 {
     /**
@@ -11,29 +12,25 @@ class TiposActoresSeeder extends Seeder
      */
     public function run()
     {
-        $TiposActores = new TiposActores();
-        $TiposActores->id = 1;        
-        $TiposActores->descripcion_tipo_actor = 'Huesped';        
-        $TiposActores->save();
+        $tipos_actores = new TiposActores();
+        $tipos_actores->descripcion_tipo_actor = "Huesped";        
+        $tipos_actores->save();
+        
+        $tipos_actores = new TiposActores();
+        $tipos_actores->descripcion_tipo_actor = "Cliente";        
+        $tipos_actores->save();
 
-        $TiposActores = new TiposActores();
-        $TiposActores->id = 2;        
-        $TiposActores->descripcion_tipo_actor = 'Cliente';        
-        $TiposActores->save();
+        $tipos_actores = new TiposActores();
+        $tipos_actores->descripcion_tipo_actor = "Asociado";        
+        $tipos_actores->save();
 
-        $TiposActores = new TiposActores();
-        $TiposActores->id = 3;        
-        $TiposActores->descripcion_tipo_actor = 'Asociado';        
-        $TiposActores->save();
+        $tipos_actores = new TiposActores();
+        $tipos_actores->descripcion_tipo_actor = "Proveedor";        
+        $tipos_actores->save();
 
-        $TiposActores = new TiposActores();
-        $TiposActores->id = 4;        
-        $TiposActores->descripcion_tipo_actor = 'Proveedores';        
-        $TiposActores->save();
+        $tipos_actores = new TiposActores();
+        $tipos_actores->descripcion_tipo_actor = "Contratista";        
+        $tipos_actores->save();       
 
-        $TiposActores = new TiposActores();
-        $TiposActores->id = 5;        
-        $TiposActores->descripcion_tipo_actor = 'Contratista';        
-        $TiposActores->save();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Turnos;
 use Illuminate\Database\Seeder;
 
 class TurnosSeeder extends Seeder
@@ -11,9 +12,10 @@ class TurnosSeeder extends Seeder
      */
     public function run()
     {
-        $turnos = new Turnos();
-        $turnos->role_user_id = 'admin';
-        $turnos->description = 'Administrador';
-        $turnos->save();
+        // $turnos = new Turnos();
+        // $turnos->role_user_id = 1;
+        // $turnos->tipo_turno_id = 1;
+        // $turnos->status_turno = 1;
+        // $turnos->save();
     }
 }

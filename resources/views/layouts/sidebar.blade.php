@@ -6,8 +6,16 @@
           <div class="user-panel">
             <div class="pull-left image">
               <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">
+            <input id="valores" type="text" name="valores" value="{{auth()->user()->turno(auth()->user()->id)}}" hidden>                
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+              </form>   
             </div>
             <div class="pull-left info">
+              @php
+              auth()->user()->turno(auth()->user()->id);    
+              @endphp
+              
             <p>{{auth()->user()->name}}</p>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -104,7 +112,7 @@
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-files-o"></i>
-                <span>Control Lost&Found</span>
+                <span>Control Lost&Found</span>                
                 <!-- <span class="pull-right-container">
                   <span class="label label-primary pull-right">4</span>
                 </span> -->
@@ -114,6 +122,20 @@
               </ul>
             </li>
 
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-files-o"></i>                
+                <span>Usuarios</span>
+                <!-- <span class="pull-right-container">
+                  <span class="label label-primary pull-right">4</span>
+                </span> -->
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route("index.users")}}"><i class="fa fa-circle-o"></i>Ver Usuarios</a></li>               
+              </ul>
+            </li>
+
+              
             <!-- <li>
               <a href="pages/widgets.html">
                 <i class="fa fa-th"></i> <span>Widgets</span>

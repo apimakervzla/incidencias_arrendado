@@ -7,7 +7,7 @@
     <img src="{{ asset("dist/img/DHO22-04.png")}}" class="img" alt="User Image" style="width:80%;">
     </p>
     
-
+    @include('flash::message')
     <form action="{{ route('login') }}" method="POST">
             @csrf
       <div class="form-group has-feedback">

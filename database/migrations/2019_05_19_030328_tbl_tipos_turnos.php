@@ -16,8 +16,8 @@ class TblTiposTurnos extends Migration
         Schema::create('tbl_tipos_turnos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->mediumText('descripcion_turno');
-            $table->timestamp('fecha_desde')->nullable();
-            $table->timestamp('fecha_hasta')->nullable();
+            $table->time('tiempo_desde')->nullable();
+            $table->time('tiempo_hasta')->nullable();
             $table->timestamps();
         });
     }

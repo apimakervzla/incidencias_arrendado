@@ -2,14 +2,14 @@
 
 namespace App\Mail;
 
-use App\Novedades;
+use App\Llaves;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
 
-class NovedadesMail extends Mailable
+class LlavesMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,14 +30,14 @@ class NovedadesMail extends Mailable
      */
     public function build(Request $request)
     {
-        $novedades=Novedades::join()->where()->get();
+        $novedades=Llaves::join()->where()->get();
 
         $name    =$request['name'];
         $mail    =$request['mail'];
         $mensaje =$request['mensaje'];
 
-        return $this->from('novedades@pagina.com')
-                    ->view('Novedades.mail')
+        return $this->from('llaves@pagina.com')
+                    ->view('Llaves.mail')
                     ->with([
                             'name' => $name,
                             'mail' => $mail,

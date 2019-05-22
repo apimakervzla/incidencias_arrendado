@@ -42,6 +42,8 @@ Route::middleware(['middleware' => 'verified'])->group(function(){
     Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');       
     
     Route::post('/agentesturnosnew', 'AgentesTurnos\AgentesTurnosController@store')->name('store.agentes_turnos');    
+
+    Route::get('/cierreturnonew', 'Turnos\TurnosController@store')->name('store.turnos');    
     
     // Route::get('/hola', function () {
     //     return view('ControlNovedades.create');

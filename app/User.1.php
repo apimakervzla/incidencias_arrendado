@@ -129,6 +129,11 @@ class User extends Authenticatable
                             $turno->status_turno=1;            
                             $turno->save();
                         }
+                        else{
+
+                            $valores=1;                    
+                            return $valores;
+                        }
                     }
                 }
                 else{

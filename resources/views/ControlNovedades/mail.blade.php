@@ -12,16 +12,14 @@
 		<div style="padding: 30px; border-radius: 15px">
 			<div style="text-align: center;">
 				@php
-					$img= public_path('images/logo.png');
+					// $img= public_path('images/logo.png');
 				@endphp
-				<img  width="200px" src="<?php echo $message->embed($img); ?>">
+				{{-- <img  width="200px" src="<?php echo $message->embed($img); ?>"> --}}
 
-				<b style="text-transform: uppercase; "><h1>Mensaje Web</h1></b>	
+				<b style="text-transform: uppercase; "><h1>Novedades Turno</h1></b>	
 			</div>
 			
-			<div>
-				<h3>Nombre: <b>{{ $name }}</b></h3>
-				<h4>Email: <b>{{ $mail }}</b></h4>
+			<div>				
 				<b>{{ $mensaje }}</b>
 			</div>
 		</div>

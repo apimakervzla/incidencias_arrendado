@@ -47,7 +47,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {        
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     /**
@@ -115,7 +115,7 @@ class RegisterController extends Controller
     {
         $roles = Role::get();
  
-        return view('auth.register',['roles'=>$roles]);
+        return view('Auth.register',['roles'=>$roles]);
     }
 
     public function edit($user_id)
@@ -128,7 +128,7 @@ class RegisterController extends Controller
         $roles = Role::get();        
         // dd($user->role_id);        
 
-        return view('auth.edit',['user'=>$user,'roles'=>$roles]);
+        return view('Auth.edit',['user'=>$user,'roles'=>$roles]);
     }
 
     public function update(Request $request,$user_id)
@@ -148,7 +148,7 @@ class RegisterController extends Controller
                     ->where('user_id', $user_id)
                     ->update(['role_id'=>$request["role_id"]]);
 
-            $rolename=Role::where('id', $data['role_id'])->first();        
+            $rolename=Role::where('id', $request['role_id'])->first();        
 
             $auditoria = new Audit();
             $auditoria->role_user_id = Auth::id();            
@@ -162,14 +162,14 @@ class RegisterController extends Controller
 
     public function index()
     {
+        
         $usuarios = User::select(DB::raw('users.id, email, users.name, users.created_at, roles.description, users.status'))
                     ->join('role_user', 'users.id', '=', 'role_user.user_id')
                     ->join('roles', 'role_user.role_id', '=', 'roles.id')
                     ->orderBy('users.created_at','desc')
                     ->get();       
 
-        // dd($usuarios);
-        return view('auth.index',['usuarios'=>$usuarios]);        
+        return view('Auth.index',['usuarios'=>$usuarios]);        
     }
 
     public function destroy($user_id)
@@ -183,6 +183,7 @@ class RegisterController extends Controller
 
     public function status($user_id, $status)
     {
+        
         switch ($status) {
             case 1:
                 $user = User::where('id', $user_id)

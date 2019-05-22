@@ -13,17 +13,17 @@
 Auth::routes(['verify' => true]);
 
 App::setLocale("es");
-Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(function(){
+Route::middleware(['middleware' => 'verified'])->group(function(){
 
     Route::get('/', function () {
         return view('index');
     });
-   
+    
+    Route::get('/newuser', 'Auth\RegisterController@form')->name('create.users');
     Route::get('/usersall', 'Auth\RegisterController@index')->name('index.users');
-    Route::get('/newuser', 'Auth\RegisterController@form')->name('create.users');    
     Route::get('/users/e{user_id}', 'Auth\RegisterController@edit')->name('edit.users');
     Route::post('/users/u{user_id}', 'Auth\RegisterController@update')->name('update.users');    
-    Route::get('/users/s{user_id}{id_estado}', 'Auth\RegisterController@status')->name('status.users');
+    Route::get('/users/s{user_id}{status}', 'Auth\RegisterController@status')->name('status.users');
 
     Route::get('/rolesall', 'Auth\RoleController@index')->name('index.roles');
     Route::get('/roles', 'Auth\RoleController@create')->name('create.roles');
@@ -42,6 +42,8 @@ Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(fu
     Route::get('/novedades/{novedad_id}', 'Novedades\NovedadesController@show')->name('show.novedades');       
     
     Route::post('/agentesturnosnew', 'AgentesTurnos\AgentesTurnosController@store')->name('store.agentes_turnos');    
+
+    Route::get('/cierreturnonew', 'Turnos\TurnosController@store')->name('store.turnos');    
     
     // Route::get('/hola', function () {
     //     return view('ControlNovedades.create');
@@ -88,4 +90,3 @@ Route::middleware(['middleware' => 'verified','middleware' => 'auth'])->group(fu
 
     //FIN MODULO LOST FOUND
 });
-

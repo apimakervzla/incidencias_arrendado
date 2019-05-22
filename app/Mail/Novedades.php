@@ -30,14 +30,34 @@ class NovedadesMail extends Mailable
      */
     public function build(Request $request)
     {
-        $novedades=Novedades::join()->where()->get();
+        $turno=$this->consultar_turno();
 
+        $resultado=array();
+        if( $turno->count() > 0)
+        {
+            //consulto las novedades  
+            $Obj_Novedades=new Novedades();
+            $resultado= $Obj_Novedades->select('tbl_novedades.id as novedad_id','descripcion_novedad','tbl_novedades.created_at','roles.description','users.name','incluir_incidencia','descripcion_turno')
+                    ->Join('tbl_turnos','tbl_turnos.id','tbl_novedades.turno_id')                  
+                    ->Join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                  
+                    ->Join('role_user','role_user.id','tbl_novedades.role_user_id')                  
+                    ->Join('roles','roles.id','role_user.role_id')                  
+                    ->Join('users','users.id','role_user.user_id')                  
+                    ->where('tbl_novedades.turno_id',$turno[0]->id)
+                    ->orderBy('tbl_novedades.created_at','desc')
+                    ->get();
+        }
+        
         $name    =$request['name'];
         $mail    =$request['mail'];
-        $mensaje =$request['mensaje'];
+        foreach ($resultado as $key => $result) {
+            $novedades.="Novedad: ".$result->descripcion_novedad.". Fecha:".$result->created_at.", ";
+        }
+        
+        $mensaje =$novedades;
 
         return $this->from('novedades@pagina.com')
-                    ->view('Novedades.mail')
+                    ->view('ControlNovedades.mail')
                     ->with([
                             'name' => $name,
                             'mail' => $mail,

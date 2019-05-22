@@ -49,17 +49,37 @@
                 </thead>
                 <tbody>                  
                 @foreach($novedades as $novedad)
+                <div class="modal modal-info fade" id="modal-novedades{{$novedad->novedad_id}}" style="display: none;">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">Novedad</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>{{ $novedad->descripcion_novedad }}</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
+                        {{-- <button type="button" class="btn btn-outline">Save changes</button> --}}
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
                 <tr>
                     <td>
                         {{ $novedad->descripcion_turno }}
                     </td>
 
                     <td>
-                       <b>{{ $novedad->description }}:</b> {{$novedad->name}}
+                       <b>{{ $novedad->description }}</b>
                     </td>
 
                     <td>
-                      {{ $novedad->descripcion_novedad }}
+                      {{$novedad->name}}
                     </td>
                     
                     <td>
@@ -76,15 +96,15 @@
                         {{ Carbon::parse($novedad->created_at)->format('h:i:s') }}     
                         </b>
                     </td>
-                    {{-- <td class="td-actions">
-                      <!-- <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$novedad->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
-                        <i class="fa fa-pencil"></i>
-                      </button>                                                  -->
-                    </td> --}}
-                  </tr>
+                    <td class="td-actions">
+                    <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" data-toggle="modal" data-target="#modal-novedades{{$novedad->novedad_id}}" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
+                        <i class="fa fa-eye"></i>
+                      </button>
+                    </td>
+                  </tr>                  
                 @endforeach                    
                 </tbody>
-              </table>
+              </table>              
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ class ModuleSeeder extends Seeder
     {
         $module = new Module();
         $module->module_description = 'Usuarios';
+        $module->correlative_module = 1;
         $module->request = '';
         $module->icon_module = 'fa fa-fw fa-user';
         $module->save();

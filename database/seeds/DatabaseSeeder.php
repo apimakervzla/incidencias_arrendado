@@ -20,5 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TiposTurnosSeeder::class);
         $this->call(TurnosSeeder::class);
         $this->call(TiposActoresSeeder::class);
+        $this->call(ColoresSeeder::class);
+        $this->call(TiposLlavesSeeder::class);
+        $this->call(TiposLlavesPerfilesSeeder::class);
     }
 }

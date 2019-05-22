@@ -48,11 +48,12 @@ class AgentesTurnosController extends Controller
             return redirect()->route('index.novedades');                
         }
 
-        $Obj_AgentesTurnos=new AgentesTurnos()     ;
-        $Obj_AgentesTurnos->role_user_id=Auth::id();
-        $Obj_AgentesTurnos->turno_id=$turno[0]->id;
+        
         foreach($request["role_user_id_agente"] as $index=>$valor)
         {
+            $Obj_AgentesTurnos=new AgentesTurnos()     ;
+            $Obj_AgentesTurnos->role_user_id=Auth::id();
+            $Obj_AgentesTurnos->turno_id=$turno[0]->id;
             $Obj_AgentesTurnos->role_user_id_agente=$valor;
             $Obj_AgentesTurnos->save();
         }

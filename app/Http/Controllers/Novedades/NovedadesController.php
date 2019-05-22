@@ -10,6 +10,7 @@ use App\Actores;
 use App\Turnos;
 use App\Tiposincidencias;
 use App\TiposActores;
+use App\AgentesTurnos;
 
 
 
@@ -75,14 +76,25 @@ class NovedadesController extends Controller
                   ->where('roles.name','agent')
                   ->get();
 
+        $turno=$this->consultar_turno();                  
+
+        $agentes_turnos= AgentesTurnos::select('users.name','role_user.id')
+        ->join('role_user','role_user.id','tbl_agentes_turnos.role_user_id_agente')
+        ->join('users','users.id','role_user.user_id')
+        ->join('roles','roles.id','role_user.role_id')
+        ->where('tbl_agentes_turnos.turno_id',$turno[0]->id)
+        ->get();                  
+
         $tipos_incidencias= Tiposincidencias::all();
         $tipos_actores= TiposActores::all();
         
         return view('ControlNovedades.create',
             [
                 'agentes'=>$agentes,
+                'agentes_turnos'=>$agentes_turnos,
                 'tipos_incidencias'=>$tipos_incidencias,
-                'tipos_actores'=>$tipos_actores
+                'tipos_actores'=>$tipos_actores,
+                'turno'=>$turno
             ]
         );
     }
@@ -97,7 +109,7 @@ class NovedadesController extends Controller
     //public function store(NovedadesRequest $request)
     {  
         //$this->validateNovedades($request);
-        //dd($request);
+        //dd($request->telefono_actor);
         //Consulto el turno_id
         $turno=$this->consultar_turno();            
         if($turno->count() <= "0" )

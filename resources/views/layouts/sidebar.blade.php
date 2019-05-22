@@ -111,7 +111,7 @@
 
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-files-o"></i>
+                <i class="fa fa-files-o"></i>                
                 <span>Control Llaves</span>                
                 <!-- <span class="pull-right-container">
                   <span class="label label-primary pull-right">4</span>

@@ -162,10 +162,10 @@ class LostFoundController extends Controller
             } 
         }
 
-        $Obj_LostFounds->url_foto_1=$aux_archivo_img[0];
-        $Obj_LostFounds->url_foto_2=$aux_archivo_img[1];
-        $Obj_LostFounds->url_foto_3=$aux_archivo_img[2];
-        $Obj_LostFounds->url_foto_4=$aux_archivo_img[3];
+        $Obj_LostFounds->url_foto_1=(isset($aux_archivo_img[0]) && $aux_archivo_img[0]!="")?$aux_archivo_img[0]:"";
+        $Obj_LostFounds->url_foto_2=(isset($aux_archivo_img[2]) && $aux_archivo_img[0]!="")?$aux_archivo_img[2]:"";
+        $Obj_LostFounds->url_foto_3=(isset($aux_archivo_img[3]) && $aux_archivo_img[0]!="")?$aux_archivo_img[3]:"";
+        $Obj_LostFounds->url_foto_4=(isset($aux_archivo_img[4]) && $aux_archivo_img[0]!="")?$aux_archivo_img[4]:"";
         $Obj_LostFounds->fecha_vencimiento_lost_found=Carbon::parse($request["fecha_vencimiento_lost_found"])->format('Y-m-d');
         $Obj_LostFounds->save();
         

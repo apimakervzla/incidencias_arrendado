@@ -42,9 +42,9 @@
                     <th>
                       Fecha Creacion
                     </th> 
-                    <th>
+                    {{-- <th>
                         Acciones
-                    </th>                
+                    </th>                 --}}
                   </tr>
                 </thead>
                 <tbody>                  

@@ -13,9 +13,9 @@
                 <i class="fa fa-plus"></i>
             </button>
              Agregar Lost Found</a>
-             <div class="container">
+             {{-- <div class="container"> --}}
                 @include('flash::message')                
-            </div>
+            {{-- </div> --}}
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                   {{-- {{ dd($lostfound) }}  --}}
-                @foreach($lostfound as $valor)
+                @foreach($lostfound as $puntero=>$valor)
                 <tr>
                     <td>
                         {{ $valor->descripcion_lostfound }}
@@ -98,6 +98,83 @@
                       <!-- <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$valor->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
                         <i class="fa fa-pencil"></i>
                       </button>                                                  -->
+
+
+                      <a class="btn btn-app" data-toggle="modal" data-target="#modal-info_{{$puntero}}">
+                          <i class="fa fa-photo"></i> Fotos
+                      </a>
+
+                    <div class="modal modal-info fade" id="modal-info_{{$puntero}}">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Fotos</h4>
+                              </div>
+                              <div class="modal-body">
+                                {{-- <p>One fine body&hellip;</p> --}}
+                                <div class="row margin-bottom">
+                                    @if ($valor->url_foto_1!="")
+                                    <div class="col-sm-6">
+                                        <img class="img-responsive" src="{{ asset("images/lostfound/$valor->url_foto_1")}}" alt="{{$valor->url_foto_1}}">
+                                    </div>
+                                    @endif  
+
+                                    @if ($valor->url_foto_2!="")
+                                    <div class="col-sm-6">
+                                        <img class="img-responsive" src="{{ asset("images/lostfound/$valor->url_foto_2")}}" alt="{{$valor->url_foto_2}}">
+                                    </div>
+                                    @endif  
+
+                                    @if ($valor->url_foto_3!="")
+                                    <div class="col-sm-6">
+                                        <img class="img-responsive" src="{{ asset("images/lostfound/$valor->url_foto_3")}}" alt="{{$valor->url_foto_3}}">
+                                    </div>
+                                    @endif  
+
+                                    @if ($valor->url_foto_4!="")
+                                    <div class="col-sm-6">
+                                        <img class="img-responsive" src="{{ asset("images/lostfound/$valor->url_foto_4")}}" alt="{{$valor->url_foto_4}}">
+                                    </div>
+                                    @endif  
+
+                                  
+
+
+                                    
+                                    
+                                    <!-- /.col -->
+                                    {{-- <div class="col-sm-6">
+                                      <div class="row">
+                                        <div class="col-sm-6">
+                                          <img class="img-responsive" src="{{ asset("images/incidencias/$incidencia->url_imagen_1")}}" alt="{{$incidencia->url_imagen_1}}">
+                                          <br>
+                                          <img class="img-responsive" src="../../dist/img/photo3.jpg" alt="Photo">
+                                        </div>
+                                        <!-- /.col -->
+                                        <div class="col-sm-6">
+                                          <img class="img-responsive" src="../../dist/img/photo4.jpg" alt="Photo">
+                                          <br>
+                                          <img class="img-responsive" src="../../dist/img/photo1.png" alt="Photo">
+                                        </div>
+                                        <!-- /.col -->
+                                      </div>
+                                      <!-- /.row -->
+                                    </div> --}}
+                                    <!-- /.col -->
+                                  </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
+                                {{-- <button type="button" class="btn btn-outline">Save changes</button> --}}
+                              </div>
+                            </div>
+                            <!-- /.modal-content -->
+                          </div>
+                          <!-- /.modal-dialog -->
+                        </div>
                     </td>
                   </tr>
                 @endforeach                    

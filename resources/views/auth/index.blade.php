@@ -12,8 +12,7 @@
          Agregar usuario</a>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <input id="mostra_vista" value="usuarios" hidden disabled>
+        <div class="table-responsive">          
           <table class="table listas">
             <thead>
               <tr>
@@ -29,9 +28,9 @@
                 <th>
                   Fecha Creacion/Modificación
                 </th>
-                            <th>
-                                Acciones
-                            </th>
+                <th>
+                    Acciones
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -53,14 +52,14 @@
                   <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('edit.users',['user_id'=>$usuario->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Editar">
                     <i<i class="fa fa-pencil"></i>
                   </button>                  
-                  @switch($usuario->id_estado)
+                  @switch($usuario->status)
                       @case(1)
-                      <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.users',['user_id'=>$usuario->id,'id_estado'=>$usuario->id_estado])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Remover">
+                      <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.users',['user_id'=>$usuario->id,'status'=>$usuario->status])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Remover">
                         <i class="fa fa-unlock"></i>
                     </button>
                           @break
                       @case(0)
-                      <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.users',['user_id'=>$usuario->id,'id_estado'=>$usuario->id_estado])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Remover">
+                      <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.users',['user_id'=>$usuario->id,'status'=>$usuario->status])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Remover">
                         <i class="fa fa-lock"></i>
                     </button>
                           @break

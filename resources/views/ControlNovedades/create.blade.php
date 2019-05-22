@@ -16,9 +16,16 @@
 <section class="content">
 
         <!-- SELECT2 EXAMPLE -->
-        <div class="box box-success">
+        @if ($agentes_turnos->count()=="0")
+          <div class="box box-success">
+        @else
+        {{-- <div class="box box-success collapsed-box"> --}}
+          <div class="box box-success">
+        @endif
+
+        
           <div class="box-header with-border">
-            <h3 class="box-title">Agentes de Turno</h3>
+            <h3 class="box-title">Agentes de Turno <strong class="card-title">{{$turno[0]->descripcion_turno}}</strong></h3>
             
                 @include('flash::message')
                 
@@ -33,8 +40,11 @@
               @csrf
           <div class="box-body">
             <div class="row">
+
+
+              @if ($agentes_turnos->count()=="0")
               <div class="col-md-6">
-                {{-- @if ($agentes_turnos=="") --}}
+                {{-- {{dd($agentes_turnos->count())}} --}}                
                 <div class="form-group">
                     <label>Agentes</label>
                     <select name="role_user_id_agente[]" class="form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true" required >
@@ -43,21 +53,103 @@
                       @endforeach                   
                     </select>
                   </div>
-                {{-- @endif                 --}}
                 <!-- /.form-group -->
               </div>
+              <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">Asignar</button>
+              </div>
+
+              @else
+
+              <div class="col-md-12">
+                  <!-- USERS LIST -->
+                  {{-- <div class="box box-danger"> --}}
+                    {{-- <div class="box-header with-border">
+                      <h3 class="box-title">Latest Members</h3>
+    
+                      <div class="box-tools pull-right">
+                        <span class="label label-danger">8 New Members</span>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                      </div>
+                    </div> --}}
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                      <ul class="users-list clearfix">
+                          @foreach ($agentes_turnos as $item=>$valor)                              
+                              <li>
+                              <img src="dist/img/user2-160x160.jpg" alt="{{$valor->name}}">
+                              <a class="users-list-name" href="#">{{$valor->name}}</a>
+                                  {{-- <span class="users-list-date">13 Jan</span> --}}
+                              </li>
+                          @endforeach
+
+                        {{-- <li>
+                          <img src="dist/img/user1-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Alexander Pierce</a>
+                          <span class="users-list-date">Today</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user8-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Norman</a>
+                          <span class="users-list-date">Yesterday</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user7-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Jane</a>
+                          <span class="users-list-date">12 Jan</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user6-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">John</a>
+                          <span class="users-list-date">12 Jan</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user2-160x160.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Alexander</a>
+                          <span class="users-list-date">13 Jan</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user5-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Sarah</a>
+                          <span class="users-list-date">14 Jan</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user4-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Nora</a>
+                          <span class="users-list-date">15 Jan</span>
+                        </li>
+                        <li>
+                          <img src="dist/img/user3-128x128.jpg" alt="User Image">
+                          <a class="users-list-name" href="#">Nadia</a>
+                          <span class="users-list-date">15 Jan</span>
+                        </li> --}}
+                      </ul>
+                      <!-- /.users-list -->
+                    </div>
+                    <!-- /.box-body -->
+                    {{-- <div class="box-footer text-center">
+                      <a href="javascript:void(0)" class="uppercase">View All Users</a>
+                    </div> --}}
+                    <!-- /.box-footer -->
+                  {{-- </div> --}}
+                  <!--/.box -->
+                </div>
+
+
+              @endif                
               <!-- /.col -->
             </div>
             <!-- /.row -->
           </div>
-          <div class="box-footer">
-              <button type="submit" class="btn btn-primary">Asignar</button>
-            </div> 
+           
           </form>
           <!-- /.box-body -->
           <div class="box-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
+            {{-- Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
+            the plugin. --}}
           </div>
         </div>
         <!-- /.box -->              
@@ -154,7 +246,7 @@
                                           </div>
                                         <div class="form-group">
                                             <label for="telefono">Teléfono de Contacto</label>
-                                            <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="tel">
+                                            <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="text" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" >
                                             @error('telefono_actor')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

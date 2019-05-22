@@ -19,7 +19,7 @@ class TblActores extends Migration
             $table->mediumText('nombre_actor');
             $table->mediumText('apellido_actor');
             $table->mediumText('identificacion_actor');
-            $table->bigInteger('telefono_actor');
+            $table->text('telefono_actor');
             $table->mediumText('numero_habitacion')->nullable();
             $table->mediumText('correo_electronico_actor')->nullable();
             $table->timestamps();

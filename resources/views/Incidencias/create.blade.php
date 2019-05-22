@@ -87,7 +87,7 @@
                                           </div>
                                         <div class="form-group">
                                             <label for="telefono">Teléfono de Contacto</label>
-                                            <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="tel">
+                                            <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="text" data-inputmask="&quot;mask&quot;: &quot;(999) 999-9999&quot;" data-mask="" >
                                         </div>                                       
                                         <div class="form-group">
                                             <label for="telefono">N° Habitación</label>

@@ -42,9 +42,9 @@
                     <th>
                       Fecha Creacion
                     </th> 
-                    <th>
+                    {{-- <th>
                         Acciones
-                    </th>                
+                    </th>                 --}}
                   </tr>
                 </thead>
                 <tbody>                  
@@ -76,11 +76,11 @@
                         {{ Carbon::parse($novedad->created_at)->format('h:i:s') }}     
                         </b>
                     </td>
-                    <td class="td-actions">
+                    {{-- <td class="td-actions">
                       <!-- <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('show.novedades',['novedad_id'=>$novedad->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
                         <i class="fa fa-pencil"></i>
                       </button>                                                  -->
-                    </td>
+                    </td> --}}
                   </tr>
                 @endforeach                    
                 </tbody>

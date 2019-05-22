@@ -241,9 +241,9 @@
                 </li> -->
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                  <!-- <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                  </div> -->
+                  <div class="pull-left">
+                  <a href="{{ route("store.turnos")}}" class="btn btn-default btn-flat">Cierre Turno</a>
+                  </div>
                   <div class="pull-right">
                       <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
                       onclick="event.preventDefault();

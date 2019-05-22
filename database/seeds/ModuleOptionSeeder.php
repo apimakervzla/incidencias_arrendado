@@ -15,7 +15,7 @@ class ModuleOptionSeeder extends Seeder
         $module_option = new ModuleOption();
         $module_option->role_user_id = 1;
         $module_option->module_id = 1;
-        $module_option->correlative = 1;
+        $module_option->correlative_module_option = 1;
         $module_option->module_option_description = 'Crear';
         $module_option->request = '';
         $module_option->route = '';   
@@ -25,7 +25,7 @@ class ModuleOptionSeeder extends Seeder
         $module_option = new ModuleOption();
         $module_option->role_user_id = 1;
         $module_option->module_id = 1;
-        $module_option->correlative = 2;
+        $module_option->correlative_module_option = 2;
         $module_option->module_option_description = 'Perfil';
         $module_option->request = '';
         $module_option->route = '';    
@@ -35,7 +35,7 @@ class ModuleOptionSeeder extends Seeder
         $module_option = new ModuleOption();
         $module_option->role_user_id = 1;
         $module_option->module_id = 1;
-        $module_option->correlative = 3;
+        $module_option->correlative_module_option = 3;
         $module_option->module_option_description = 'Auditoría';
         $module_option->request = '';
         $module_option->route = '';  

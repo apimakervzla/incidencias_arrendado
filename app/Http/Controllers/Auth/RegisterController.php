@@ -148,7 +148,7 @@ class RegisterController extends Controller
                     ->where('user_id', $user_id)
                     ->update(['role_id'=>$request["role_id"]]);
 
-            $rolename=Role::where('id', $data['role_id'])->first();        
+            $rolename=Role::where('id', $request['role_id'])->first();        
 
             $auditoria = new Audit();
             $auditoria->role_user_id = Auth::id();            

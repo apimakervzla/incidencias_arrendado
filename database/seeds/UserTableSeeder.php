@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Role;
+use Carbon\Carbon;
 
 class UserTableSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class UserTableSeeder extends Seeder
         $user->name = 'Ruben Betancourt';
         $user->email = 'rubentorres26@gmail.com';
         $user->password = Hash::make('123456');
+        $user->email_verified_at = Carbon::now();
         $user->status = true;
         $user->save();
         $user->roles()->attach($role_admin);
@@ -28,6 +30,7 @@ class UserTableSeeder extends Seeder
         $user->name = 'Edgar Silva';
         $user->email = 'edgarsilvalovera@gmail.com';
         $user->password = Hash::make('123456');
+        $user->email_verified_at = Carbon::now();
         $user->status = true;
         $user->save();
         $user->roles()->attach($role_admin);

@@ -17,7 +17,7 @@ class CreateTblTiposLlaves extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('color_id');
             $table->mediumText('nombre_llave');
-            $table->integer('tiempo_expira');
+            $table->time('tiempo_expira')->useCurrent = true;
             $table->timestamps();
 
             $table->foreign('color_id')->references('id')->on('tbl_colores')->onDelete('restrict');            

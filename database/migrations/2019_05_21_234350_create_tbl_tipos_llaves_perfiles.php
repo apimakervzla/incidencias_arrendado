@@ -17,13 +17,13 @@ class CreateTblTiposLlavesPerfiles extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('role_user_id');
             $table->unsignedBigInteger('tipo_llave_id');
-            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('role_user_id_permisado');
             $table->boolean('status_tipo_llave_perfil')->default('0');
             $table->timestamps();
 
             $table->foreign('role_user_id')->references('id')->on('role_user')->onDelete('restrict');      
-            $table->foreign('tipo_llave_id')->references('id')->on('tbl_tipos_llaves')->onDelete('restrict');      
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('restrict');      
+            $table->foreign('role_user_id_permisado')->references('id')->on('role_user')->onDelete('restrict');      
+            $table->foreign('tipo_llave_id')->references('id')->on('tbl_tipos_llaves')->onDelete('restrict');                  
         });
     }
 

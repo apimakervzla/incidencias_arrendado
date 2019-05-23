@@ -40,6 +40,66 @@ class AuthorizationSeeder extends Seeder
         $authorization->create = true;        
         $authorization->update = true;        
         $authorization->read = true;        
-        $authorization->save();        
+        $authorization->save();     
+        
+        $authorization = new Authorization();
+        $authorization->role_user_id = 1;
+        $authorization->role_id = 1;
+        $authorization->module_option_id = 4;
+        $authorization->authorized = true;
+        $authorization->create = true;        
+        $authorization->update = true;        
+        $authorization->read = true;        
+        $authorization->save();     
+
+        $authorization = new Authorization();
+        $authorization->role_user_id = 1;
+        $authorization->role_id = 1;
+        $authorization->module_option_id = 5;
+        $authorization->authorized = true;
+        $authorization->create = true;        
+        $authorization->update = true;        
+        $authorization->read = true;        
+        $authorization->save();     
+
+        $authorization = new Authorization();
+        $authorization->role_user_id = 1;
+        $authorization->role_id = 2;
+        $authorization->module_option_id = 1;
+        $authorization->authorized = true;
+        $authorization->create = true;        
+        $authorization->update = true;        
+        $authorization->read = true;        
+        $authorization->save();     
+
+        $authorization = new Authorization();
+        $authorization->role_user_id = 1;
+        $authorization->role_id = 2;
+        $authorization->module_option_id = 2;
+        $authorization->authorized = true;
+        $authorization->create = true;        
+        $authorization->update = true;        
+        $authorization->read = true;        
+        $authorization->save();
+
+        $authorization = new Authorization();
+        $authorization->role_user_id = 1;
+        $authorization->role_id = 2;
+        $authorization->module_option_id = 4;
+        $authorization->authorized = true;
+        $authorization->create = true;        
+        $authorization->update = true;        
+        $authorization->read = true;        
+        $authorization->save();
+        
+        $authorization = new Authorization();
+        $authorization->role_user_id = 1;
+        $authorization->role_id = 4;
+        $authorization->module_option_id = 3;
+        $authorization->authorized = true;
+        $authorization->create = true;        
+        $authorization->update = true;        
+        $authorization->read = true;        
+        $authorization->save();
     }
 }

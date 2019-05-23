@@ -8,6 +8,7 @@ use App\Audit;
 use App\Incidencias;
 use App\Actores;
 use App\Turnos;
+use App\Role;
 use App\Tiposincidencias;
 use App\TiposActores;
 use App\AgentesTurnos;
@@ -38,7 +39,8 @@ class NovedadesController extends Controller
         $turno=$this->consultar_turno();
 
         $resultado=array();
-        if( $turno->count() > 0)
+        if ($turno!=null) {
+            if( $turno->count() > 0 && $turno->status_turno!=0)
         {
             //consulto las novedades  
             $Obj_Novedades=new Novedades();
@@ -48,10 +50,12 @@ class NovedadesController extends Controller
                     ->Join('role_user','role_user.id','tbl_novedades.role_user_id')                  
                     ->Join('roles','roles.id','role_user.role_id')                  
                     ->Join('users','users.id','role_user.user_id')                  
-                    ->where('tbl_novedades.turno_id',$turno[0]->id)
+                    ->where('tbl_novedades.turno_id',$turno->id)
                     ->orderBy('tbl_novedades.created_at','desc')
                     ->get();
         }
+        }
+       
 
         //dd($resultado);
         //flash('BIENVENIDOS AL SISTEMA');
@@ -82,7 +86,7 @@ class NovedadesController extends Controller
         ->join('role_user','role_user.id','tbl_agentes_turnos.role_user_id_agente')
         ->join('users','users.id','role_user.user_id')
         ->join('roles','roles.id','role_user.role_id')
-        ->where('tbl_agentes_turnos.turno_id',$turno[0]->id)
+        ->where('tbl_agentes_turnos.turno_id',$turno->id)
         ->get();                  
 
         $tipos_incidencias= Tiposincidencias::all();
@@ -210,7 +214,7 @@ class NovedadesController extends Controller
         
         //Seteo role_user_id para cargar la novedad
         $Obj_Novedades->role_user_id=Auth::id();      
-        $Obj_Novedades->turno_id=$turno[0]->id;
+        $Obj_Novedades->turno_id=$turno->id;
         $Obj_Novedades->incluir_incidencia=($request["incidencia_id"])?"1":"0";        
         $Obj_Novedades->save();        
 
@@ -275,20 +279,13 @@ class NovedadesController extends Controller
         //$role_user=Auth::user()->whatRoleUser(Auth::user()->id);
         //dd($role_user);
 
-        $Obj_Turnos= new Turnos()   ;
-        $turno= $Obj_Turnos->select('tbl_turnos.id','tbl_turnos.role_user_id','tbl_turnos.tipo_turno_id','tbl_tipos_turnos.descripcion_turno')                  
-                ->Join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                  
-                ->Join('role_user','role_user.id','tbl_turnos.role_user_id')                  
-                ->Join('roles','roles.id','role_user.role_id')                  
-                ->Join('users','users.id','role_user.user_id')                  
-                ->where(
-                    [
-                        ['tbl_turnos.role_user_id',Auth::user()->id],
-                        ['tbl_turnos.status_turno',"1"]
-                    ]
-                )
-                ->orderby('tbl_turnos.id','DESC')->take(1)
-                ->get(); 
+        $turno=Role::select('tbl_turnos.id','tbl_turnos.role_user_id','tipo_turno_id','status_turno','descripcion_turno')
+            ->join('role_user','role_user.role_id','roles.id')                        
+            ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                                            
+            ->join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                
+            ->orderBy('tbl_turnos.created_at','desc')                                           
+            ->orderBy('tbl_turnos.tipo_turno_id','desc')                                           
+            ->first();
         //dd($turno);
         return $turno;
     }

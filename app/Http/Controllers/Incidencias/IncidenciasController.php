@@ -9,6 +9,7 @@ use App\User;
 use App\Audit;
 use App\Actores;
 use App\Turnos;
+use App\Role;
 use App\Tiposincidencias;
 use App\TiposActores;
 
@@ -30,6 +31,10 @@ class IncidenciasController extends Controller
     public function index()
     {
         //
+        $turno=$this->consultar_turno();
+
+        $resultado=null;
+        if ($turno!=null) {
         //echo "jajjaa";exit;
         $resultado= Incidencias::select('tbl_incidencias.id','tbl_incidencias.role_user_id','tbl_incidencias.created_at',
                             'tbl_incidencias.tipo_incidencia_id','tbl_incidencias.role_user_id_actor',
@@ -48,9 +53,34 @@ class IncidenciasController extends Controller
                   
                   //->where('tbl_novedades.turno_id',$turno_id)
                   ->get();
-
+        }
         //dd($resultado);
-        return view('Incidencias.index')->with('incidencias',$resultado);
+        return view('Incidencias.index',
+        [
+            'incidencias'=>$resultado,
+            'turno'=>$turno
+            // 'tipos_actores'=>$tipos_actores
+        ]
+        );        
+    }
+
+    public function consultar_turno()
+    {
+        //Consulto el Role User del usurio logeado
+        //$role_user=Auth::user()->whatRoleUser(Auth::user()->id);
+        //dd($role_user);
+
+        $turno=Role::select('tbl_turnos.id','tbl_turnos.role_user_id','tipo_turno_id','status_turno','descripcion_turno')
+            ->join('role_user','role_user.role_id','roles.id')                        
+            ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                                            
+            ->join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                                                        
+            ->orderBy('tbl_turnos.created_at','desc')                                           
+            ->orderBy('tbl_turnos.tipo_turno_id','desc')                                           
+            ->first();
+        // dd($turno);
+
+        
+        return $turno;
     }
 
     /**

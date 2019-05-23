@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('link_back', url('novedadessall'))
+@section('link_back', url('llavessall'))
 @section('content')
 
 <section class="content-header">
@@ -29,117 +29,20 @@
                             <label>Llaves</label>                                        
                             <select name="tipo_llave_id" id="tipo_llave_id" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">                                        
                             @foreach ($llaves as $llave)
-                            <option value="{{$llave->id}}" style="color: {{$llave->hexadecimal}};">{{$llave->nombre_llave}}</option>    
+                            <option value="{{$llave->id}}">                                
+                                {{ $llave->nombre_llave}}  
+                            </option>    
                             @endforeach                    
                             </select>
                         </div>
-
-                        <div class="form-group">
-                            <label>Perfiles</label>                                        
-                            <select name="role_id" id="role_id" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">                                        
-                            @foreach ($llaves as $llave)
-                            <option value="{{$llave->id}}" style="color: {{$llave->hexadecimal}};">{{$llave->nombre_llave}}</option>    
-                            @endforeach                    
+                          <div class="form-group">
+                            <label>Usuarios Permitidos</label>                                        
+                            <select name="role_user_id_permisado" id="role_user_id_permisado" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">                                        
+                                                
                             </select>
                         </div>
-                            <!-- radio -->
-                            <div class="form-group">
-                            <div class="radio">
-                                {{ __('Causa Incidencia:') }}                                
-                                <label>
-                                <input name="incidencia_id" id="optionsRadios1" class="option" value="1" type="radio">
-                                Si
-                                </label>
-                                <label>
-                                <input name="incidencia_id" id="optionsRadios2" class="option" value="0" checked="" type="radio">
-                                No
-                                </label>
-                            </div>                                                       
-                            </div>    
-                            <div class="incidenciasform" style="display:none">
-                                    <div class="box-header with-border">
-                                      <h3 class="box-title">Incidencias</h3>
-                            
-                                      <div class="box-tools pull-right">                                        
-                                        {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> --}}
-                                      </div>
-                                    </div>          
-                                    <!-- /.box-header -->
-                                    <div class="box-body">
-                                      <div class="row">
-                                        <div class="col-md-6">
-                                        <div class="form-group">
-                                        <label>Tipo incidencia</label>                                        
-                                        <select name="tipo_incidencia_id" id="tipo_incidencia_id" class="incidencias form-control select2" style="width: 100%;" data-placeholder="Seleccione">                                        
-                                        @foreach ($tipos_incidencias as $tipo_incidencia)
-                                        <option value="{{$tipo_incidencia->id}}">{{$tipo_incidencia->descripcion_tipo_incidencia}}</option>    
-                                        @endforeach                    
-                                        </select>
-                                        </div>
-                                        <div class="form-group">
-                                                <label>Detalle la Incidencia</label>
-                                                <textarea name="detalle_incidencia" class="incidencias form-control" rows="3" placeholder="Escriba aquí ..."></textarea>
-                                        </div>                                        
-                                        <div class="form-group">
-                                          <label>Agentes</label>
-                                          <!-- <select name="role_user_id_actor[]" class="agentes incidencias form-control select2" multiple="" data-placeholder="Seleccione uno o mas" style="width: 100%;" tabindex="-1" aria-hidden="true"> -->
-                                          <select name="role_user_id_actor" class="agentes incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">                                          
-                                        @foreach ($agentes as $agente)
-                                        <option value="{{$agente->id}}">{{$agente->name}}</option>    
-                                            @endforeach                   
-                                          </select>
-                                        </div>
-                                        <div class="actoresform">
-                                        <div class="form-group">
-                                            <label>Tipos Actores</label>
-                                            <select name="tipo_actor_id" id="tipo_actor_id" class="actores incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                            <option value="">Seleccione...</option>
-                                            @foreach ($tipos_actores as $tipo_actor)
-                                        <option value="{{$tipo_actor->id}}">{{$tipo_actor->descripcion_tipo_actor}}</option>    
-                                            @endforeach                    
-                                          </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="nombreinput">Nombre</label>
-                                            <input name="nombre_actor" class="nombre actores incidencias form-control" id="nombreinput" placeholder="Ingrese Nombre" type="text">
-                                          </div>
-                                          <div class="form-group">
-                                              <label for="apellidoinput">Apellido</label>
-                                              <input name="apellido_actor" class="actores incidencias form-control" id="apellidoinput" placeholder="Ingrese Apellid" type="text">
-                                            </div>
-                                        <div class="form-group">
-                                            <label for="documentoid">Documento de Identidad</label>
-                                            <input name="identificacion_actor" class="actores incidencias form-control" id="documentoid" placeholder="Ingrese Doc" type="text">
-                                          </div>
-                                        <div class="form-group">
-                                            <label for="telefono">Teléfono de Contacto</label>
-                                            <input name="telefono_actor" class="actores incidencias form-control" id="telefono" placeholder="Ingrese tel" type="tel">
-                                            @error('telefono_actor')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>                                       
-                                        <div class="form-group">
-                                            <label for="telefono">N° Habitación</label>
-                                            <input name="numero_habitacion" class="numero_habitacion incidencias form-control" id="numero_habitacion" placeholder="Ingrese Número Hab." type="text">
-                                        </div>                                       
-                                        </div>
-                                        <div class="form-group">
-                                        <label for="exampleInputFile">Evidencias</label>
-                                        <input name="url_imagen[]" class="incidencias" id="exampleInputFile" type="file" multiple>
-                        
-                                        <p class="help-block">Ingrese max 6 fotografías.</p>
-                                        </div>
-                                          <!-- /.form-group -->
-                                        </div>
-                                        <!-- /.col -->
-                                      </div>
-                                      <!-- /.row -->
-                                    </div> 
-                                </div>  
                                 <div class="box-footer">
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                        <button type="submit" class="btn btn-primary">Entregar</button>
                                       </div>                                                        
                           </form>
                         </div>
@@ -152,6 +55,44 @@
 @push('scripts')
 <script>  
     $(document).ready(function() {
+     
+
+      var $company2 = $('#tipo_llave_id');
+      var $location2 = $("#role_user_id_permisado");
+
+      $company2.select2().on('change', function() {
+          $.ajax({
+              url:"llaves/tl" + $company2.val(), // if you say $(this) here it will refer to the ajax call not $('.company2')
+              type:'GET',
+              success:function(data) {
+                  $location2.empty();
+                  $.each(data, function(value, key) {
+                      $location2.append($("<option></option>").attr("value", value).text(key)); // name refers to the objects value when you do you ->lists('name', 'id') in laravel
+                  });
+                  $location2.select2(); //reload the list and select the first option
+              }
+          });
+      }).trigger('change');
+
+      // $("#role_user_id").select2({
+      //     dropdownParent: $("#tipo_llave_id")
+      //   });
+//  $("#tipo_llave_id").change(function (event) {
+//     $.get("llaves/tl"+event.target.value+"",function(response,tipo_llave_id)
+//     {
+//       console.log();
+//       $("#role_user_id").empty();
+//       for (let index = 0; index < response.length; index++) {
+       
+//       $("#role_user_id").append("<option value='"+response[i].id+"'>"+response[i].name+"</option>");
+      
+//     }
+//     });
+
+    
+//   });
+
+     
        //Initialize Select2 Elements
        $('.select2').select2();              
        $(".option").click(function(){

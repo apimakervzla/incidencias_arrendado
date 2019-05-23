@@ -25,7 +25,7 @@
 
         
           <div class="box-header with-border">
-            <h3 class="box-title">Agentes de Turno <strong class="card-title">{{$turno[0]->descripcion_turno}}</strong></h3>
+            <h3 class="box-title">Agentes de Turno <strong class="card-title">{{$turno->descripcion_turno}}</strong></h3>
             
                 @include('flash::message')
                 

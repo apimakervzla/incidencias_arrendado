@@ -60,11 +60,15 @@ Route::middleware(['middleware' => 'verified'])->group(function(){
     Route::get('/incidencias/{novedad_id}', 'Incidencias\IncidenciasController@show')->name('show.incidencias');   
 
     //MODULO lLAVES
-
+    
     Route::get('/llavesall', 'Llaves\LlavesController@index')->name('index.llaves');
     Route::get('/llaves', 'Llaves\LlavesController@create')->name('create.llaves');
+    Route::get('/llaves/tl{role_user_id_permisado}', 'Llaves\LlavesController@combo')->name('combo.llaves'); 
     Route::post('/llavenew', 'Llaves\LlavesController@store')->name('store.llaves');
-    Route::get('/llaves/{llave_id}', 'Llaves\LlavesController@show')->name('show.llaves');   
+    Route::get('/llaves/s{tipo_llave_id}', 'Llaves\LlavesController@status')->name('status.llaves'); 
+    Route::get('/llaves/{llave_id}', 'Llaves\LlavesController@show')->name('show.llaves');  
+    
+    
 
 
 

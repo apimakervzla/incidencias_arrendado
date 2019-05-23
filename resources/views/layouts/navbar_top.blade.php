@@ -241,9 +241,13 @@
                 </li> -->
                 <!-- Menu Footer-->
                 <li class="user-footer">
+                  @if (Auth::user()->hasRole('super'))
                   <div class="pull-left">
-                  <a href="{{ route("store.turnos")}}" class="btn btn-default btn-flat">Cierre Turno</a>
-                  </div>
+                      <a href="{{ route("store.turnos")}}" class="btn btn-default btn-flat">Cierre Turno</a>
+                      </div>
+                  
+                  @endif
+                 
                   <div class="pull-right">
                       <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
                       onclick="event.preventDefault();

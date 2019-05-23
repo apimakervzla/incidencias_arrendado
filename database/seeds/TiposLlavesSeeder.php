@@ -15,25 +15,25 @@ class TiposLlavesSeeder extends Seeder
         $color = new TiposLlaves();
         $color->color_id = 1;
         $color->nombre_llave = "primera";        
-        $color->tiempo_expira = 6;        
+        $color->tiempo_expira = "06:00:00";        
         $color->save();
 
         $color = new TiposLlaves();
         $color->color_id = 2;
         $color->nombre_llave = "segunda";    
-        $color->tiempo_expira = 7;        
+        $color->tiempo_expira = "07:00:00";             
         $color->save();
 
         $color = new TiposLlaves();
         $color->color_id = 3;
         $color->nombre_llave = "tercera";    
-        $color->tiempo_expira = 3;        
+        $color->tiempo_expira = "03:00:00";        
         $color->save();
 
         $color = new TiposLlaves();
         $color->color_id = 4;
         $color->nombre_llave = "cuarta";    
-        $color->tiempo_expira = 8;        
+        $color->tiempo_expira = "08:00:00";               
         $color->save();
     }
 }

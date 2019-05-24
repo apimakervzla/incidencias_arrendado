@@ -81,12 +81,7 @@ class TurnosController extends Controller
                             $turno->role_user_id=Auth::id();
                             $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                             $turno->status_turno=0;            
-                            $turno->save();
-
-                            $destinatarios = "rubentorres26@gmail.com";
-
-                            $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
-                            $datos["user_id"]=Auth::id();
+                            $turno->save();                           
 
                             $destinatarios = "rubentorres26@gmail.com";
 
@@ -94,26 +89,26 @@ class TurnosController extends Controller
                             $datos["user_id"]=Auth::id();
 
                             
-                            foreach ($destinatarios as $key => $destinatario) {
-                                switch ($destinatario->modulo_destinatario) {
-                                    case 'novedades':
-                                    Mail::to($destinatario->mail)->send(new Novedades($datos));
-                                        break;
-                                    case 'incidencias':
-                                    Mail::to($destinatario->email)->send(new Incidencias($datos));
-                                        break;
-                                    case 'llaves':
-                                    Mail::to($destinatario->email)->send(new Llaves($datos));
-                                        break;
-                                    case 'lostfound':
-                                    Mail::to($destinatario->email)->send(new LostFound($datos));
-                                        break;
+                            // foreach ($destinatarios as $key => $destinatario) {
+                            //     switch ($destinatario->modulo_destinatario) {
+                            //         case 'novedades':
+                            //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                            //             break;
+                            //         case 'incidencias':
+                            //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                            //             break;
+                            //         case 'llaves':
+                            //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                            //             break;
+                            //         case 'lostfound':
+                            //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                            //             break;
                                     
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                            }
+                            //         default:
+                            //             # code...
+                            //             break;
+                            //     }
+                            // }
                         }
                         else{
                             $turno= new Turnos();
@@ -128,26 +123,26 @@ class TurnosController extends Controller
                             $datos["user_id"]=Auth::id();
 
                             
-                            foreach ($destinatarios as $key => $destinatario) {
-                                switch ($destinatario->modulo_destinatario) {
-                                    case 'novedades':
-                                    Mail::to($destinatario->mail)->send(new Novedades($datos));
-                                        break;
-                                    case 'incidencias':
-                                    Mail::to($destinatario->email)->send(new Incidencias($datos));
-                                        break;
-                                    case 'llaves':
-                                    Mail::to($destinatario->email)->send(new Llaves($datos));
-                                        break;
-                                    case 'lostfound':
-                                    Mail::to($destinatario->email)->send(new LostFound($datos));
-                                        break;
+                            // foreach ($destinatarios as $key => $destinatario) {
+                            //     switch ($destinatario->modulo_destinatario) {
+                            //         case 'novedades':
+                            //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                            //             break;
+                            //         case 'incidencias':
+                            //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                            //             break;
+                            //         case 'llaves':
+                            //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                            //             break;
+                            //         case 'lostfound':
+                            //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                            //             break;
                                     
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                            }
+                            //         default:
+                            //             # code...
+                            //             break;
+                            //     }
+                            // }
                         }
                     }
                           
@@ -169,28 +164,27 @@ class TurnosController extends Controller
                     $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
                     $datos["user_id"]=Auth::id();
 
-                    Mail::to($destinatarios)->send(new Novedades($datos));
-
-                            // foreach ($destinatarios as $key => $destinatario) {
-                            //     switch ($destinatario->modulo_destinatario) {
-                            //         case 'novedades':
-                            //         Mail::to($destinatario->email)->send(new NovedadesMail($datos));
-                            //             break;
-                            //         case 'incidencias':
-                            //         Mail::to($destinatario->email)->send(new IncidenciasMail($datos));
-                            //             break;
-                            //         case 'llaves':
-                            //         Mail::to($destinatario->email)->send(new LlavesMail($datos));
-                            //             break;
-                            //         case 'lostfound':
-                            //         Mail::to($destinatario->email)->send(new LostFoundMail($datos));
-                            //             break;
-                                    
-                            //         default:
-                            //             # code...
-                            //             break;
-                            //     }
-                            // }
+                    
+                    // foreach ($destinatarios as $key => $destinatario) {
+                    //     switch ($destinatario->modulo_destinatario) {
+                    //         case 'novedades':
+                    //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                    //             break;
+                    //         case 'incidencias':
+                    //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                    //             break;
+                    //         case 'llaves':
+                    //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                    //             break;
+                    //         case 'lostfound':
+                    //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                    //             break;
+                            
+                    //         default:
+                    //             # code...
+                    //             break;
+                    //     }
+                    // }
 
                 }
 

@@ -165,26 +165,26 @@ class User extends Authenticatable
                             $datos["user_id"]=Auth::id();
 
                             
-                            foreach ($destinatarios as $key => $destinatario) {
-                                switch ($destinatario->modulo_destinatario) {
-                                    case 'novedades':
-                                    Mail::to($destinatario->mail)->send(new Novedades($datos));
-                                        break;
-                                    case 'incidencias':
-                                    Mail::to($destinatario->email)->send(new Incidencias($datos));
-                                        break;
-                                    case 'llaves':
-                                    Mail::to($destinatario->email)->send(new Llaves($datos));
-                                        break;
-                                    case 'lostfound':
-                                    Mail::to($destinatario->email)->send(new LostFound($datos));
-                                        break;
+                            // foreach ($destinatarios as $key => $destinatario) {
+                            //     switch ($destinatario->modulo_destinatario) {
+                            //         case 'novedades':
+                            //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                            //             break;
+                            //         case 'incidencias':
+                            //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                            //             break;
+                            //         case 'llaves':
+                            //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                            //             break;
+                            //         case 'lostfound':
+                            //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                            //             break;
                                     
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                            }
+                            //         default:
+                            //             # code...
+                            //             break;
+                            //     }
+                            // }
 
                         
 

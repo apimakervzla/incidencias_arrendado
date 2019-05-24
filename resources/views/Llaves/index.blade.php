@@ -74,18 +74,19 @@
                             <i class="fa fa-circle" style="color: #00a65a;"></i> Disponible  
                                 @break
                             @case(1)
-                            <i class="fa fa-circle" style="color: #f39c12;"></i> Entregado
-                                @break
-                            @case(3)
-                            <i class="fa fa-circle" style="color: ##d73925;"></i> Venció Tiempo Entrega 
-                                @break
+                              @if ($llave->tiempo_maximo<Carbon::now())
+                              <i class="fa fa-circle" style="color: #d73925;"></i> Venció Tiempo Entrega     
+                              @else
+                              <i class="fa fa-circle" style="color: #f39c12;"></i> Entregado    
+                              @endif                            
+                                @break                            
                             @default
                           @endswitch     
                           
                               
                           </td>
                         <td>       
-                          @if ($llave->fecha_prestamo)
+                          @if ($llave->status_llave==1)
                             {{ Carbon::parse($llave->fecha_prestamo)->format('d-m-Y') }}     
                             -
                             <b>
@@ -95,7 +96,7 @@
                         </td>
                         <td class="td-actions">
                             @if ($llave->status_llave)
-                            <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.llaves',['tipo_llave_perfil_id'=>$llave->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Recibido">
+                            <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.llaves',['tipo_llave_id'=>$llave->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Recibido">
                                 <i class="fa fa-key"></i>
                             </button>
                           @endif 

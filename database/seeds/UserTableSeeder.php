@@ -21,7 +21,7 @@ class UserTableSeeder extends Seeder
         $user->name = 'Ruben Betancourt';
         $user->email = 'rubentorres26@gmail.com';
         $user->password = Hash::make('123456');
-        $user->email_verified_at = Carbon::now();
+        // $user->email_verified_at = Carbon::now();
         $user->status = true;
         $user->save();
         $user->roles()->attach($role_admin);

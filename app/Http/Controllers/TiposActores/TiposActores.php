@@ -5,7 +5,7 @@ namespace App\Http\Controllers\TiposActores;
 use App\TiposActores;
 use Illuminate\Http\Request;
 
-class TiposActores extends Controller
+class TiposActoresController extends Controller
 {
     /**
      * Display a listing of the resource.

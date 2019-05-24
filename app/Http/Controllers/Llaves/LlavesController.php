@@ -42,7 +42,7 @@ class LlavesController extends Controller
                                     ,(SELECT status_llave FROM tbl_tipos_llaves_perfiles tlp
                                     JOIN tbl_llaves
                                     ON tlp.id=tbl_llaves.tipo_llave_perfil_id
-                                    WHERE tlp.tipo_llave_id=tl.id ORDER BY tbl_llaves.id DESC LIMIT 1) AS status_llave
+                                    WHERE tlp.tipo_llave_id=tl.id AND tlp.id=tbl_llaves.tipo_llave_perfil_id ORDER BY tbl_llaves.id DESC LIMIT 1) AS status_llave
                                     ,(SELECT tbl_llaves.created_at FROM tbl_tipos_llaves_perfiles tlp
                                     JOIN tbl_llaves
                                     ON tbl_llaves.tipo_llave_perfil_id=tlp.id
@@ -50,7 +50,15 @@ class LlavesController extends Controller
                                      ,(SELECT tipo_llave_perfil_id FROM tbl_tipos_llaves_perfiles tlp
                                      JOIN tbl_llaves
                                      ON tbl_llaves.tipo_llave_perfil_id=tlp.id
-                                      WHERE tipo_llave_id=tl.id ORDER BY tbl_llaves.id DESC LIMIT 1) AS tipo_llave_perfil_id"))
+                                      WHERE tipo_llave_id=tl.id ORDER BY tbl_llaves.id DESC LIMIT 1) AS tipo_llave_perfil_id
+                                    ,(SELECT ADDTIME(l.created_at,tiempo_expira) 
+                                        FROM tbl_llaves l
+                                        JOIN tbl_tipos_llaves_perfiles tlp
+                                        ON tlp.id=l.tipo_llave_perfil_id 
+                                        JOIN tbl_tipos_llaves tl
+                                        ON tl.id=tlp.tipo_llave_id
+                                        WHERE tlp.tipo_llave_id=tl.id
+                                        ORDER BY l.id DESC LIMIT 1) as tiempo_maximo "))
                                     ->join('tbl_colores','tbl_colores.id','tl.color_id')          
                                     ->get();
             }
@@ -187,23 +195,22 @@ class LlavesController extends Controller
         return $usuarios_permitidos;
     }
 
-    public function status($tipo_llave_perfil_id)
+    public function status($tipo_llave_id)
     {        
         $turno=$this->consultar_turno();
-
-        
-        $ultima_llave=Llaves::where('tipo_llave_perfil_id',$tipo_llave_perfil_id)
+        $ultima_llave=Llaves::join('tbl_tipos_llaves_perfiles','tbl_tipos_llaves_perfiles.id','tbl_llaves.tipo_llave_perfil_id')
+                            ->join('tbl_tipos_llaves','tbl_tipos_llaves.id','tbl_tipos_llaves_perfiles.tipo_llave_id')
+                            ->where('tipo_llave_id',$tipo_llave_id)
                             ->where('status_llave',1)
-                            ->orderBy('id','desc')
+                            ->orderBy('tbl_llaves.id','desc')
                             ->first();
         // dd($ultima_llave);
 
-        $llavename=TiposLlaves::join('tbl_tipos_llaves_perfiles','tbl_tipos_llaves_perfiles.tipo_llave_id','tbl_tipos_llaves.id')
-                            ->where('tbl_tipos_llaves_perfiles.id',$tipo_llave_perfil_id)->first();
+        $llavename=TiposLlaves::where('id',$tipo_llave_id)->first();
         
         $llave = new Llaves();
         $llave->role_user_id = Auth::id();        
-        $llave->tipo_llave_perfil_id = $tipo_llave_perfil_id;        
+        $llave->tipo_llave_perfil_id = $ultima_llave->tipo_llave_perfil_id;        
         $llave->status_llave = 0;        
         $llave->turno_id = $turno->id;        
         $llave->save();      

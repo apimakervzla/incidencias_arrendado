@@ -43,15 +43,15 @@ class NovedadesMail extends Mailable
                     ->Join('role_user','role_user.id','tbl_novedades.role_user_id')                  
                     ->Join('roles','roles.id','role_user.role_id')                  
                     ->Join('users','users.id','role_user.user_id')                  
-                    ->where('tbl_novedades.turno_id',$turno[0]->id)
+                    ->where('tbl_novedades.turno_id',$turno->id)
                     ->orderBy('tbl_novedades.created_at','desc')
                     ->get();
         }
         
-        $name    =$request['name'];
+        $name    =$request['name']="hola";
         $mail    =$request['mail'];
         foreach ($resultado as $key => $result) {
-            $novedades.="Novedad: ".$result->descripcion_novedad.". Fecha:".$result->created_at.", ";
+            $novedades.="Novedad: ".$result->descripcion_novedad.". Fecha:".$result->created_at."<br>";
         }
         
         $mensaje =$novedades;
@@ -63,6 +63,6 @@ class NovedadesMail extends Mailable
                             'mail' => $mail,
                             'mensaje' => $mensaje,
                       ])
-                    ->subject('Mensaje Web');
+                    ->subject('Informe Novedades');
     }
 }

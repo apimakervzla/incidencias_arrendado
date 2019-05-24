@@ -5,12 +5,12 @@ namespace App;
 use App\Role;
 use App\Turnos;
 use App\TiposTurnos;
-use App\Novedades;
+use App\Mail\Novedades;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\VerificandoEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -159,24 +159,25 @@ class User extends Authenticatable
                             $turno->status_turno=0;            
                             $turno->save();
 
-                            $destinatarios = "";
+                            $destinatarios = "rubentorres26@gmail.com";
 
                             $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
-                            $datos["user_id"]=$user_id;
+                            $datos["user_id"]=Auth::id();
 
+                            
                             foreach ($destinatarios as $key => $destinatario) {
                                 switch ($destinatario->modulo_destinatario) {
                                     case 'novedades':
-                                    Mail::to($destinatario->email)->send(new NovedadesMail($datos));
+                                    Mail::to($destinatario->mail)->send(new Novedades($datos));
                                         break;
                                     case 'incidencias':
-                                    Mail::to($destinatario->email)->send(new IncidenciasMail($datos));
+                                    Mail::to($destinatario->email)->send(new Incidencias($datos));
                                         break;
                                     case 'llaves':
-                                    Mail::to($destinatario->email)->send(new LlavesMail($datos));
+                                    Mail::to($destinatario->email)->send(new Llaves($datos));
                                         break;
                                     case 'lostfound':
-                                    Mail::to($destinatario->email)->send(new LostFoundMail($datos));
+                                    Mail::to($destinatario->email)->send(new LostFound($datos));
                                         break;
                                     
                                     default:
@@ -249,7 +250,13 @@ class User extends Authenticatable
                         ->first();        
         return $since->created_at;
     }
-    /**
+    
+    public function sendEmailVerificacion($verify)
+    {
+        
+        $this->notify(new VerificandoEmail($verify));
+    }
+        /**
      * The attributes that are mass assignable.
      *
      * @var array

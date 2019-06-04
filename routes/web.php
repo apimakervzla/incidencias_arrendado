@@ -20,6 +20,9 @@ Route::middleware(['middleware' => 'verified'])->group(function(){
         return view('index');
     });
     
+    Route::post('/sigturnoigusuper', 'Auth\RegisterController@logoutsigturnoigusuper')->name('logout.sigturnoigusuper')->middleware('verified');
+    Route::post('/turnodifsuper', 'Auth\RegisterController@logoutturnodifsuper')->name('logout.turnodifsuper')->middleware('verified');
+    Route::post('/turnocerrado', 'Auth\RegisterController@logoutturnocerrado')->name('logout.turnocerrado')->middleware('verified');
     Route::get('/newuser', 'Auth\RegisterController@form')->name('create.users')->middleware('verified');
     Route::get('/usersall', 'Auth\RegisterController@index')->name('index.users')->middleware('verified');
     Route::get('/users/e{user_id}', 'Auth\RegisterController@edit')->name('edit.users')->middleware('verified');

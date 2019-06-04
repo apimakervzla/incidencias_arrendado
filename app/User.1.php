@@ -88,7 +88,7 @@ class User extends Authenticatable
     {
         if(Auth::id()){
 
-            $turno_actual=Role::select('tbl_turnos.role_user_id','tipo_turno_id','status_turno')
+            $turno_actual=Role::select('tbl_turnos.role_user_id','tipo_turno_id','status_turno','tbl_turnos.created_at')
             ->join('role_user','role_user.role_id','roles.id')                        
             ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                                            
             ->orderBy('tbl_turnos.created_at','desc')                                           
@@ -118,41 +118,81 @@ class User extends Authenticatable
             if($turno_actual){
                     if($turno_actual->status_turno!=1)
                 {
-                    if ($turno_actual->role_user_id!=$mirol->role_user_id) {
+                        if($turno_actual->tipo_turno_id==$tipo_turno_id->tipo_turno_id){
 
-                        if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
+                            if ($turno_actual->created_at->format('d-m-Y')!=now()->format('d-m-Y')) {
+                                $turno= new Turnos();
+                                $turno->role_user_id=$mirol->role_user_id;
+                                $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
+                                $turno->status_turno=1;            
+                                $turno->save();
+    
+                                $turno_act="";
+                            } else {
+                                $turno_act=5;                    
+                                return $turno_act;
+                            }                            
+                            
+                        }
+                        else{
                             $turno= new Turnos();
                             $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                             $turno->status_turno=1;            
                             $turno->save();
-                        }
-                        else{
 
-                            $valores=1;                    
-                            return $valores;
-                        }
-                    }
-                    else{
-                        if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
-                            $turno= new Turnos();
-                            $turno->role_user_id=$mirol->role_user_id;
-                            $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
-                            $turno->status_turno=1;            
-                            $turno->save();
-                        }
-                        else{
-
-                            $valores=1;                    
-                            return $valores;
-                        }
-                    }
+                            $turno_act="";
+                        }   
                 }
                 else{
                     if($turno_actual->role_user_id!=$mirol->role_user_id){
 
-                        if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
+                        if($turno_actual->tipo_turno_id==$tipo_turno_id->tipo_turno_id){
+                            
+                            if ($turno_actual->created_at->format('d-m-Y')!=now()->format('d-m-Y') && $turno_actual->created_at->format('"H:i')>now()->format('"H:i') && date('d-m-Y',strtotime ( '+1 day' , strtotime ($turno_actual->created_at)))!=now()->format('d-m-Y')) {
+                              
+                                $turno= new Turnos();
+                                $turno->role_user_id=$mirol->role_user_id;
+                                $turno->tipo_turno_id=$turno_actual->tipo_turno_id;
+                                $turno->status_turno=0;            
+                                $turno->save();
 
+                                $destinatarios = "rubentorres26@gmail.com";
+
+                                $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
+                                $datos["user_id"]=Auth::id();
+
+                                
+                                // foreach ($destinatarios as $key => $destinatario) {
+                                //     switch ($destinatario->modulo_destinatario) {
+                                //         case 'novedades':
+                                //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                                //             break;
+                                //         case 'incidencias':
+                                //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                                //             break;
+                                //         case 'llaves':
+                                //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                                //             break;
+                                //         case 'lostfound':
+                                //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                                //             break;
+                                        
+                                //         default:
+                                //             # code...
+                                //             break;
+                                //     }
+                                // }                               
+
+                                $turno_act=3;
+                            } else {
+                                $valores=4;                    
+                                return $valores;
+                            }
+                            
+
+                        }
+                        else {
                             $turno= new Turnos();
                             $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$turno_actual->tipo_turno_id;
@@ -184,24 +224,29 @@ class User extends Authenticatable
                             //             # code...
                             //             break;
                             //     }
-                            // }
+                            // }                               
 
-                        
-
-                            $turno= new Turnos();
-                            $turno->role_user_id=$mirol->role_user_id;
-                            $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
-                            $turno->status_turno=1;            
-                            $turno->save();
-                        }
-                        else {
-                            $valores=1;                    
-                            return $valores;
+                            $turno_act=3;
                         }
                     }
                     else{
-                        if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
+                        if($turno_actual->tipo_turno_id==$tipo_turno_id->tipo_turno_id){
 
+                            if ($turno_actual->created_at->format('d-m-Y')!=now()->format('d-m-Y') && $turno_actual->created_at->format('"H:i')>now()->format('"H:i') && date('d-m-Y',strtotime ( '+1 day' , strtotime ($turno_actual->created_at)))!=now()->format('d-m-Y')) {
+                                $turno= new Turnos();
+                                $turno->role_user_id=$mirol->role_user_id;
+                                $turno->tipo_turno_id=$turno_actual->tipo_turno_id;
+                                $turno->status_turno=0;            
+                                $turno->save();
+    
+                                // Mail::to($destinatario->email)->send(new NovedadesMail($datos));
+    
+                                $turno_act=3; 
+                            } else {
+                                $turno_act="";
+                            }                                                                      
+                        }
+                        else{
                             $turno= new Turnos();
                             $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$turno_actual->tipo_turno_id;
@@ -210,7 +255,7 @@ class User extends Authenticatable
 
                             // Mail::to($destinatario->email)->send(new NovedadesMail($datos));
 
-                            $turno=1;                                            
+                            $turno_act=3;  
                         }
                     }
                 }
@@ -221,6 +266,7 @@ class User extends Authenticatable
                             ->join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                                            
                             ->orderBy('tbl_turnos.created_at','desc')                                           
                             ->first();
+                            $turno_act="";
                 }
                 else{
                     $turno= new Turnos();
@@ -228,18 +274,21 @@ class User extends Authenticatable
                     $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                     $turno->status_turno=1;            
                     $turno->save();
+
+                    $turno_act="";
                 }
             }
             else {
-                $turno=2;
+                $turno_act="";
+                
             }
             
             }
         else{
-            $turno=1;
+            $turno_act=1;
         }
 
-        return $turno;
+        return $turno_act;
     }
 
     public function sinceUser($user_id)

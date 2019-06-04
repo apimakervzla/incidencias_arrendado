@@ -13,6 +13,7 @@
             <i class="fa fa-plus"></i>
         </button>
          Agregar usuario</a>
+         @include('flash::message')   
       </div>
       <div class="card-body">
         <div class="table-responsive">          

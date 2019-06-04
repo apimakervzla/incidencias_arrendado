@@ -1,3 +1,6 @@
+@php
+auth()->user()->turno(auth()->user()->id);    
+@endphp
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
@@ -7,14 +10,21 @@
             <div class="pull-left image">
               <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">
             <input id="valores" type="text" name="valores" value="{{auth()->user()->turno(auth()->user()->id)}}" hidden>                
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            <form id="logout-form-nosesion" action="{{ route('logout') }}" method="POST" style="display: none;">
                   @csrf
-              </form>   
+              </form> 
+              <form id="logout-form-sigturnoigusuper" action="{{ route('logout.sigturnoigusuper') }}" method="POST" style="display: none;">
+                @csrf
+            </form> 
+            <form id="logout-form-turnodifsuper" action="{{ route('logout.turnodifsuper') }}" method="POST" style="display: none;">
+              @csrf
+          </form> 
+          <form id="logout-form-turnocerrado" action="{{ route('logout.turnocerrado') }}" method="POST" style="display: none;">
+            @csrf
+        </form>   
             </div>
             <div class="pull-left info">
-              @php
-              auth()->user()->turno(auth()->user()->id);    
-              @endphp
+             
               
             <p>{{auth()->user()->name}}</p>
               <a href="#"><i class="fa fa-circle text-success"></i>En Linea</a>

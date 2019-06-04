@@ -4,17 +4,55 @@
 @php
   use Carbon\Carbon;
 @endphp
+
+<div class="col-md-12">
+  {{-- hola --}}
+  {{-- https://www.youtube.com/watch?v=ycB4tdX3uvc --}}
+  {{-- https://www.kerneldev.com/2018/09/07/qr-codes-in-laravel-complete-guide/ --}}
+
+  {{-- {!! QrCode::generate('Edgar'); !!} --}}
+  {{-- {!! QrCode::size(100)->generate('hola'); !!} --}}
+  {{-- {!! QrCode::size(100)->generate('hola','../public/images/qrcode.png'); !!} --}}
+  {{-- {!! QrCode::size(250)->backgroundColor(255,255,204)->generate('MyNotePaper'); !!} --}}
+  {{-- {!! QrCode::size(100)->generate('MyNotePaper'); !!} --}}
+
+  {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(200)->errorCorrection('H')->generate('hola')) !!} "> --}}
+
+
+  {{-- {!!
+    $pngImage = QrCode::format('png')->merge('../public/images/qrcode.png', 0.3, true)
+      ->size(500)->errorCorrection('H')
+      ->generate('Welcome to kerneldev.com!'); 
+
+      response($pngImage)->header('Content-type','image/png')
+  !!} --}}
+
+
+</div>
+
+
 <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
               <strong class="card-title">Lista de Novedades</strong>
               - Turno:
-              <strong class="card-title">{{$turno[0]->descripcion_turno}}</strong>
-            <a href="{{ route('create.novedades')}}" class="card-category">
-            <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" class="btn btn-white btn-link btn-sm" data-original-title="Agregar">
-                <i class="fa fa-plus"></i>
-            </button>
-             Agregar Novedad</a>
+              <strong class="card-title">
+                @if ($novedades!=null)   
+                {{$turno->descripcion_turno}}
+                @else
+                Sin Turno Abierto
+                @endif
+                </strong>
+                @if ($novedades!=null)   
+                <a href="{{ route('create.novedades')}}" class="card-category">
+                    <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" class="btn btn-white btn-link btn-sm" data-original-title="Agregar">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                     Agregar Novedad</a>
+                @else
+                
+                @endif
+           
              
                 @include('flash::message')
                 
@@ -23,32 +61,33 @@
           <div class="card-body">
             <div class="table-responsive">
               <input id="mostra_vista" value="usuarios" hidden disabled>
-              <table class="table listas">
+              <table class="table listas">                
+                @if ($novedades!=null)   
                 <thead>
-                  <tr>
-                    <th>
-                      Turno
-                    </th>
-                    <th>
-                      Rol
-                    </th>
-                    <th>
-                      Nombres
-                    </th>
-                    
-                    <th>
-                        Incidencia
-                    </th>
-                    <th>
-                      Fecha Creacion
-                    </th> 
-                    {{-- <th>
-                        Acciones
-                    </th>                 --}}
-                  </tr>
-                </thead>
-                <tbody>                  
-                @foreach($novedades as $novedad)
+                    <tr>
+                      <th>
+                        Turno
+                      </th>
+                      <th>
+                        Rol
+                      </th>
+                      <th>
+                        Nombres
+                      </th>
+                      
+                      <th>
+                          Incidencia
+                      </th>
+                      <th>
+                        Fecha Creacion
+                      </th> 
+                      {{-- <th>
+                          Acciones
+                      </th>                 --}}
+                    </tr>
+                  </thead>
+                  <tbody> 
+                    @foreach($novedades as $novedad)
                 <div class="modal modal-info fade" id="modal-novedades{{$novedad->novedad_id}}" style="display: none;">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -101,9 +140,18 @@
                         <i class="fa fa-eye"></i>
                       </button>
                     </td>
-                  </tr>                  
-                @endforeach                    
-                </tbody>
+                  </tr>   
+                </tbody>               
+                @endforeach 
+                    @else
+                    <thead>
+                        <tr>
+                          <th>
+                            Sin Turno Abierto
+                          </th>                          
+                        </tr>
+                      </thead>                   
+                    @endif   
               </table>              
             </div>
           </div>

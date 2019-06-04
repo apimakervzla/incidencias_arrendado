@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Turnos;
 
 use App\Turnos;
+use App\Novedades;
 use App\Role;
 use App\Audit;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+//use App\Mail\Novedades;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +43,20 @@ class TurnosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store()
-    {
+    { 
+        $Obj_Novedades=new Novedades();
+        $turno=$Obj_Novedades->consultar_turno();        
+        $novedades=array();
+        $novedades= $Obj_Novedades->select('tbl_novedades.id as novedad_id','descripcion_novedad','tbl_novedades.created_at','roles.description','users.name','incluir_incidencia','descripcion_turno')
+                        ->Join('tbl_turnos','tbl_turnos.id','tbl_novedades.turno_id')                  
+                        ->Join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                  
+                        ->Join('role_user','role_user.id','tbl_novedades.role_user_id')                  
+                        ->Join('roles','roles.id','role_user.role_id')                  
+                        ->Join('users','users.id','role_user.user_id')        
+                        ->where('tbl_novedades.turno_id',$turno->id)
+                        ->orderBy('tbl_novedades.created_at','desc')
+                        ->get();  
+
         if(Auth::id()){
             $turno_actual=Role::select('tbl_turnos.role_user_id','tipo_turno_id','status_turno')
             ->join('role_user','role_user.role_id','roles.id')                        
@@ -79,26 +95,29 @@ class TurnosController extends Controller
                             $turno->role_user_id=Auth::id();
                             $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                             $turno->status_turno=0;            
-                            $turno->save();
+                            $turno->save();                           
 
-                            $destinatarios = "";
+                            $destinatarios = "rubentorres26@gmail.com";
+                            $destinatarios = "edgarsilvalovera@gmail.com";
 
                             $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
                             $datos["user_id"]=Auth::id();
 
-                            // foreach ($destinatarios as $key => $destinatario) {
+                            
+                            // foreach ($destinatarios as $key => $destinatario) 
+                            // {
                             //     switch ($destinatario->modulo_destinatario) {
                             //         case 'novedades':
-                            //         Mail::to($destinatario->email)->send(new NovedadesMail($datos));
+                            //         Mail::to($destinatario->mail)->send(new Novedades($datos));
                             //             break;
                             //         case 'incidencias':
-                            //         Mail::to($destinatario->email)->send(new IncidenciasMail($datos));
+                            //         Mail::to($destinatario->email)->send(new Incidencias($datos));
                             //             break;
                             //         case 'llaves':
-                            //         Mail::to($destinatario->email)->send(new LlavesMail($datos));
+                            //         Mail::to($destinatario->email)->send(new Llaves($datos));
                             //             break;
                             //         case 'lostfound':
-                            //         Mail::to($destinatario->email)->send(new LostFoundMail($datos));
+                            //         Mail::to($destinatario->email)->send(new LostFound($datos));
                             //             break;
                                     
                             //         default:
@@ -107,6 +126,18 @@ class TurnosController extends Controller
                             //     }
                             // }
 
+
+                                  
+                            Mail::send(
+                                'Mail.novedades',
+                                ["novedades"=>$novedades],
+                                function($message)
+                                {
+                                    $message->from('mercadointerno2019@gmail.com','Sistema de Incidencias');
+                                    $message->to('edgarsilvalovera@gmail.com')->subject("Novedades");
+                                    //$message->to('yadilo64@hotmail.com')->subject("Novedades");
+                                }
+                            );
                         }
                         else{
                             $turno= new Turnos();
@@ -115,24 +146,25 @@ class TurnosController extends Controller
                             $turno->status_turno=0;            
                             $turno->save();
 
-                            $destinatarios = "";
+                            $destinatarios = "rubentorres26@gmail.com";
 
                             $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
                             $datos["user_id"]=Auth::id();
 
+                            
                             // foreach ($destinatarios as $key => $destinatario) {
                             //     switch ($destinatario->modulo_destinatario) {
                             //         case 'novedades':
-                            //         Mail::to($destinatario->email)->send(new NovedadesMail($datos));
+                            //         Mail::to($destinatario->mail)->send(new Novedades($datos));
                             //             break;
                             //         case 'incidencias':
-                            //         Mail::to($destinatario->email)->send(new IncidenciasMail($datos));
+                            //         Mail::to($destinatario->email)->send(new Incidencias($datos));
                             //             break;
                             //         case 'llaves':
-                            //         Mail::to($destinatario->email)->send(new LlavesMail($datos));
+                            //         Mail::to($destinatario->email)->send(new Llaves($datos));
                             //             break;
                             //         case 'lostfound':
-                            //         Mail::to($destinatario->email)->send(new LostFoundMail($datos));
+                            //         Mail::to($destinatario->email)->send(new LostFound($datos));
                             //             break;
                                     
                             //         default:
@@ -140,7 +172,16 @@ class TurnosController extends Controller
                             //             break;
                             //     }
                             // }
-
+                            Mail::send(
+                                'Mail.novedades',
+                                ["novedades"=>$novedades],
+                                function($message)
+                                {
+                                    $message->from('mercadointerno2019@gmail.com','Sistema de Incidencias');
+                                    $message->to('edgarsilvalovera@gmail.com')->subject("Novedades");
+                                    //$message->to('yadilo64@hotmail.com')->subject("Novedades");
+                                }
+                            );
                         }
                     }
                           
@@ -157,31 +198,42 @@ class TurnosController extends Controller
                     $turno->status_turno=0;            
                     $turno->save();
 
-                    $destinatarios = "";
+                    $destinatarios = "rubentorres26@gmail.com";
 
-                            $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
-                            $datos["user_id"]=Auth::id();
+                    $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
+                    $datos["user_id"]=Auth::id();
 
-                            // foreach ($destinatarios as $key => $destinatario) {
-                            //     switch ($destinatario->modulo_destinatario) {
-                            //         case 'novedades':
-                            //         Mail::to($destinatario->email)->send(new NovedadesMail($datos));
-                            //             break;
-                            //         case 'incidencias':
-                            //         Mail::to($destinatario->email)->send(new IncidenciasMail($datos));
-                            //             break;
-                            //         case 'llaves':
-                            //         Mail::to($destinatario->email)->send(new LlavesMail($datos));
-                            //             break;
-                            //         case 'lostfound':
-                            //         Mail::to($destinatario->email)->send(new LostFoundMail($datos));
-                            //             break;
-                                    
-                            //         default:
-                            //             # code...
-                            //             break;
-                            //     }
-                            // }
+                    
+                    // foreach ($destinatarios as $key => $destinatario) {
+                    //     switch ($destinatario->modulo_destinatario) {
+                    //         case 'novedades':
+                    //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                    //             break;
+                    //         case 'incidencias':
+                    //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                    //             break;
+                    //         case 'llaves':
+                    //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                    //             break;
+                    //         case 'lostfound':
+                    //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                    //             break;
+                            
+                    //         default:
+                    //             # code...
+                    //             break;
+                    //     }
+                    // }
+                    Mail::send(
+                        'Mail.novedades',
+                        ["novedades"=>$novedades],
+                        function($message)
+                        {
+                            $message->from('mercadointerno2019@gmail.com','Sistema de Incidencias');
+                            $message->to('edgarsilvalovera@gmail.com')->subject("Novedades");
+                            //$message->to('yadilo64@hotmail.com')->subject("Novedades");
+                        }
+                    );
 
                 }
 

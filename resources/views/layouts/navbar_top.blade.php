@@ -207,13 +207,16 @@
             <!-- User Account: style can be found in dropdown.less -->
             <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="user-image" alt="User Image">
+                {{-- <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="user-image" alt="User Image"> --}}
+                <img width="25" height="25" src="{{ asset("images/usuarios")}}/{{auth()->user()->foto_usuario}}" class="img-circle" alt="{{auth()->user()->name}}">
                 <span class="hidden-xs">{{auth()->user()->name}}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
-                <li class="user-header">
-                  <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">
+                <li class="user-header">                  
+                  {{-- <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image"> --}}
+                  <img width="90" height="90" src="{{ asset("images/usuarios")}}/{{auth()->user()->foto_usuario}}" class="img-circle" alt="{{auth()->user()->name}}">
+                
   
                   <p>
                     @php
@@ -241,9 +244,13 @@
                 </li> -->
                 <!-- Menu Footer-->
                 <li class="user-footer">
+                  @if (Auth::user()->hasRole('super'))
                   <div class="pull-left">
-                  <a href="{{ route("store.turnos")}}" class="btn btn-default btn-flat">Cierre Turno</a>
-                  </div>
+                      <a href="{{ route("store.turnos")}}" class="btn btn-default btn-flat">Cierre Turno</a>
+                      </div>
+                  
+                  @endif
+                 
                   <div class="pull-right">
                       <a class="btn btn-default btn-flat" href="{{ route('logout') }}"
                       onclick="event.preventDefault();

@@ -5,7 +5,9 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image">
+              {{-- <img src="{{ asset("dist/img/user2-160x160.jpg")}}" class="img-circle" alt="User Image"> --}}
+              <img width="45" height="45" src="{{ asset("images/usuarios")}}/{{auth()->user()->foto_usuario}}" class="img-circle" alt="{{auth()->user()->name}}">
+
             <input id="valores" type="text" name="valores" value="{{auth()->user()->turno(auth()->user()->id)}}" hidden>                
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                   @csrf
@@ -17,7 +19,7 @@
               @endphp
               
             <p>{{auth()->user()->name}}</p>
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+              <a href="#"><i class="fa fa-circle text-success"></i>En Linea</a>
             </div>
           </div>
           <!-- search form -->
@@ -38,115 +40,60 @@
             
             <li class="header">Módulos del Sistema</li>            
 
-            {{--}}
+            
             @php
-                $module_auths= auth()->user()->whatModule(auth()->user()->id);                
+                $module_auths= auth()->user()->whatModule(auth()->user()->id); 
+                //dd($module_auths);   
+                
+                //dd($module_auths->count());
             @endphp
-            @foreach ($module_auths as $key=> $module_auth)            
-            @if ($module_auth->module_id!=$key || $module_auth->module_id<$key)
-            <li class="treeview">
-                <a href="#">                  
-                  <i class="fa fa-dashboard"></i> <span>{{$module_auth->module_description}}</span>      
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
-                </a>
-                <ul class="treeview-menu">
-                    @if ($module_auth->module_option_id!=$key || $module_auth->module_option_id<$key)
-                    
-                        <li>
-                        <a href="index.html"><i class="fa fa-circle-o"></i>{{$module_auth->module_option_description}}</a>
-                        </li>
-                    @endif
+            @foreach ($module_auths as $key=>$valor)
+              @if ($key=="0")
+                <li class="treeview">
+                      <a href="#">                  
+                        <i class="{{$valor->icon_module}}"></i> <span>{{$valor->module_description}}</span>      
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+              @else
+                @if ($valor->module_id != $module_auths[$key-1]->module_id)
+                  <li class="treeview">
+                      <a href="#">                  
+                        <i class="{{$valor->icon_module}}"></i> <span>{{$valor->module_description}}</span>      
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">                    
+                @endif
+              @endif
+
+
+
+              @if ($key=="0")
+                <li>
+                  <a href="{{ route($valor->route)}}"><i class="{{$valor->icon_module_option}}"></i>{{$valor->module_option_description}}</a>
+                </li>                  
+              @else
+                @if ($valor->module_option_id != $module_auths[$key-1]->module_option_id)
+                  <li>
+                    <a href="{{ route($valor->route)}}"><i class="{{$valor->icon_module_option}}"></i>{{$valor->module_option_description}}</a>
+                  </li>                       
+                @endif                  
+              @endif
+
+              @if ( ($module_auths->count() - 1) == ($key))
                   </ul>
                 </li>
-                @endif                
+              @else
+                @if ($valor->module_id != $module_auths[$key+1]->module_id)
+                    </ul>
+                  </li>
+                @endif                  
+              @endif
             @endforeach
-           {{--}}
-            <!-- <li class="treeview">
-              <a href="#">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li>
-                  <a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a>
-                </li>
-                {{-- <li class="active"> --}}
-                <li>
-                  <a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a>
-                </li>
-              </ul>
-            </li> -->
-
-
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>Control Novedades</span>
-                <!-- <span class="pull-right-container">
-                  <span class="label label-primary pull-right">4</span>
-                </span> -->
-              </a>
-              <ul class="treeview-menu">
-              <li><a href="{{ route("index.novedades")}}"><i class="fa fa-circle-o"></i>Ver Novedades</a></li>               
-              </ul>
-            </li>
-
-
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>Control Incidencias</span>
-                <!-- <span class="pull-right-container">
-                  <span class="label label-primary pull-right">4</span>
-                </span> -->
-              </a>
-              <ul class="treeview-menu">
-              <li><a href="{{ route("index.incidencias")}}"><i class="fa fa-circle-o"></i>Ver Incidencias</a></li>               
-              </ul>
-            </li>
-
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>                
-                <span>Control Llaves</span>                
-                <!-- <span class="pull-right-container">
-                  <span class="label label-primary pull-right">4</span>
-                </span> -->
-              </a>
-              <ul class="treeview-menu">
-              <li><a href="{{ route("index.llaves")}}"><i class="fa fa-circle-o"></i>Ver Llaves</a></li>               
-              </ul>              
-            </li>
-
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>Control Lost&Found</span>                
-                <!-- <span class="pull-right-container">
-                  <span class="label label-primary pull-right">4</span>
-                </span> -->
-              </a>
-              <ul class="treeview-menu">
-              <li><a href="{{ route("index.lostfound")}}"><i class="fa fa-circle-o"></i>Ver Lost&Found</a></li>               
-              </ul>
-            </li>
-
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>                
-                <span>Usuarios</span>
-                <!-- <span class="pull-right-container">
-                  <span class="label label-primary pull-right">4</span>
-                </span> -->
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route("index.users")}}"><i class="fa fa-circle-o"></i>Ver Usuarios</a></li>               
-              </ul>
-            </li>
 
               
             <!-- <li>

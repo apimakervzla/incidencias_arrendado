@@ -8,6 +8,7 @@ use App\User;
 use App\TiposActores;
 use App\Actores;
 use App\Audit;
+use App\TblPisosLugares;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -37,11 +38,17 @@ class LostFoundController extends Controller
                     ->Join('role_user','role_user.id','tbl_lost_found.role_user_id_agente')                                      
                     ->Join('users','users.id','role_user.user_id')                                      
                     ->Join('tbl_turnos','tbl_turnos.id','tbl_lost_found.turno_id')                                      
-                    ->Join('tbl_actores','tbl_actores.id','tbl_lost_found.actor_id')                                      
+                    ->Join('tbl_actores','tbl_actores.id','tbl_lost_found.actor_id')      
+                    
+                    ->leftJoin('tbl_pisos_lugares','tbl_pisos_lugares.id','tbl_actores.numero_habitacion')                  
+                  ->leftJoin('tbl_pisos','tbl_pisos.id','tbl_pisos_lugares.piso_id')
+                  ->leftJoin('tbl_lugares','tbl_lugares.id','tbl_pisos_lugares.lugar_id')
+                    
                     ->Join('tbl_tipos_actores','tbl_tipos_actores.id','tbl_actores.tipo_actor_id')                                      
                     ->where('tbl_lost_found.turno_id',$turno[0]->id)
                     ->get();
-        }
+            }
+            //dd($resultado);
 
         return view('LostFound.index',
         [
@@ -67,11 +74,21 @@ class LostFoundController extends Controller
         //$tipos_incidencias= Tiposincidencias::all();
         $tipos_actores= TiposActores::all();
         
+        $pisoslugares=TblPisosLugares::select('tbl_pisos_lugares.id','tbl_pisos_lugares.piso_id','tbl_pisos_lugares.lugar_id',
+            'tbl_pisos.nombre_piso','tbl_lugares.nombre_lugar'
+        )
+            ->join('tbl_pisos','tbl_pisos.id','tbl_pisos_lugares.piso_id')
+            ->join('tbl_lugares','tbl_lugares.id','tbl_pisos_lugares.lugar_id')
+            ->orderBy('orden_piso','asc')
+            ->orderBy('nombre_lugar','asc')
+            ->get();
+
         return view('LostFound.create',
             [
                 'agentes'=>$agentes,
                 //'tipos_incidencias'=>$tipos_incidencias,
-                'tipos_actores'=>$tipos_actores
+                'tipos_actores'=>$tipos_actores,
+                'pisoslugares'=>$pisoslugares
             ]
         );
     }
@@ -150,22 +167,23 @@ class LostFoundController extends Controller
         {
             $msj="Sólo se aceptan 4 Fotos Máx";
         }
-
+        $time=time();
         foreach ($file as $key => $value) 
         {            
             if(true)//($request->hasFile($key))//if($request->hasFile('url_imagen1'))
             {
+                $time++;
                 $nombreArchivo  =   "img_incidencias";
-                $archivo_img    =   $aux_archivo_img[]=$nombreArchivo."_".time().'.'.$value->getClientOriginalExtension();
+                $archivo_img    =   $aux_archivo_img[]=$nombreArchivo."_".$time.'.'.$value->getClientOriginalExtension();
                 $path           =   public_path().'/images/lostfound/';                
                 $value->move($path, $archivo_img);                
             } 
         }
 
         $Obj_LostFounds->url_foto_1=(isset($aux_archivo_img[0]) && $aux_archivo_img[0]!="")?$aux_archivo_img[0]:"";
-        $Obj_LostFounds->url_foto_2=(isset($aux_archivo_img[2]) && $aux_archivo_img[0]!="")?$aux_archivo_img[2]:"";
-        $Obj_LostFounds->url_foto_3=(isset($aux_archivo_img[3]) && $aux_archivo_img[0]!="")?$aux_archivo_img[3]:"";
-        $Obj_LostFounds->url_foto_4=(isset($aux_archivo_img[4]) && $aux_archivo_img[0]!="")?$aux_archivo_img[4]:"";
+        $Obj_LostFounds->url_foto_2=(isset($aux_archivo_img[1]) && $aux_archivo_img[1]!="")?$aux_archivo_img[1]:"";
+        $Obj_LostFounds->url_foto_3=(isset($aux_archivo_img[2]) && $aux_archivo_img[2]!="")?$aux_archivo_img[2]:"";
+        $Obj_LostFounds->url_foto_4=(isset($aux_archivo_img[3]) && $aux_archivo_img[3]!="")?$aux_archivo_img[3]:"";
         $Obj_LostFounds->fecha_vencimiento_lost_found=Carbon::parse($request["fecha_vencimiento_lost_found"])->format('Y-m-d');
         $Obj_LostFounds->save();
         

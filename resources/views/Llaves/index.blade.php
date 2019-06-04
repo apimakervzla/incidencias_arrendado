@@ -7,14 +7,25 @@
 <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-              <strong class="card-title">Lista de Llaves</strong>
-              - Turno:
-              {{-- <strong class="card-title">{{$turno[0]->descripcion_turno}}</strong> --}}
-            <a href="{{ route('create.llaves')}}" class="card-category">
-            <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" class="btn btn-white btn-link btn-sm" data-original-title="Agregar">
-                <i class="fa fa-plus"></i>
-            </button>
-             Agregar Prestamo</a>
+              <strong class="card-title">Lista de Llaves</strong>       
+              - Turno:       
+              <strong class="card-title">
+                @if ($llaves!=null)
+                {{$turno->descripcion_turno}}
+                @else
+                Sin Turno Abierto
+                @endif
+                </strong>
+                @if ($llaves!=null)
+                <a href="{{ route('create.llaves')}}" class="card-category">
+                    <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" class="btn btn-white btn-link btn-sm" data-original-title="Agregar">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                     Agregar Prestamo</a>
+                @else
+                
+                @endif
+            
              
                 @include('flash::message')
                 
@@ -24,81 +35,85 @@
             <div class="table-responsive">
               <input id="mostra_vista" value="usuarios" hidden disabled>
               <table class="table listas">
-                <thead>
-                  <tr>                   
-                    <th>
-                      Nombres
-                    </th>
-                    
-                    <th>
-                        Estatus
-                    </th>
-                    <th>
-                      Fecha Creacion
-                    </th> 
-                    <th>
-                        Acciones
-                    </th>                
-                  </tr>
-                </thead>
-                <tbody>                  
-                @foreach($llaves as $llave)
-                <div class="modal modal-info fade" id="modal-novedades{{$llave->id}}" style="display: none;">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title">Llave</h4>
-                      </div>
-                      <div class="modal-body">
-                        <p>{{ $llave->nombre_llave }}</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cerrar</button>
-                        {{-- <button type="button" class="btn btn-outline">Save changes</button> --}}
-                      </div>
-                    </div>
-                    <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-                </div>
-                <tr>
-                    <td style="color: {{ $llave->hexadecimal }};">
-                        {{ $llave->nombre_llave }}
-                    </td>
-                    
-                    <td>   
-                        @switch($llave->status_llave)
+                  @if ($llaves!=null)
+                  <thead>
+                      <tr>                   
+                        <th>
+                          Nombres de Llaves
+                        </th>
+                        <th>
+                          Prestamo a
+                        </th>                    
+                        <th>
+                            Estatus
+                        </th>
+                        <th>
+                          Fecha Prestamo
+                        </th>                     
+                        <th>
+                            Acciones
+                        </th>                
+                      </tr>
+                    </thead>
+                    <tbody>                  
+                    @foreach($llaves as $llave)                
+                    <tr>
+                        <td>
+                          <i class="fa fa-circle" style="color: {{ $llave->hexadecimal }};"></i>
+                            {{ $llave->nombre_llave }}
+                        </td>
+                        <td>         
+                          @if ($llave->status_llave==1)
+                          {{ $llave->usuario_prestamo }}                          
+                          @endif                                       
+                        </td>
+                        <td>   
+                          
+                          @switch($llave->status_llave)
                             @case(0)
-                            <i class="fa fa-circle text-success"></i> Disponible  
+                            <i class="fa fa-circle" style="color: #00a65a;"></i> Disponible  
                                 @break
                             @case(1)
-                            <i class="fa fa-circle text-warning"></i> Entregado  
-                                @break
-                            @case(3)
-                            <i class="fa fa-circle text-error"></i> Venció Tiempo Entrega 
-                                @break
+                              @if ($llave->tiempo_maximo<Carbon::now())
+                              <i class="fa fa-circle" style="color: #d73925;"></i> Venció Tiempo Entrega     
+                              @else
+                              <i class="fa fa-circle" style="color: #f39c12;"></i> Entregado    
+                              @endif                            
+                                @break                            
                             @default
-                                
-                        @endswitch                    
-                                          
-                      </td>
-                    <td>       
-                        {{ Carbon::parse($llave->created_at)->format('d-m-Y') }}     
-                        -
-                        <b>
-                        {{ Carbon::parse($llave->created_at)->format('h:i:s') }}     
-                        </b>
-                    </td>
-                    <td class="td-actions">
-                    <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" data-toggle="modal" data-target="#modal-novedades{{$llave->id}}" class="btn btn-white btn-link btn-sm" data-original-title="Ver">
-                        <i class="fa fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>                  
-                @endforeach                    
-                </tbody>
+                          @endswitch     
+                          
+                              
+                          </td>
+                        <td>       
+                          @if ($llave->status_llave==1)
+                            {{ Carbon::parse($llave->fecha_prestamo)->format('d-m-Y') }}     
+                            -
+                            <b>
+                            {{ Carbon::parse($llave->fecha_prestamo)->format('h:i:s') }}     
+                            </b>
+                          @endif                        
+                        </td>
+                        <td class="td-actions">
+                            @if ($llave->status_llave)
+                            <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.llaves',['tipo_llave_id'=>$llave->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Recibido">
+                                <i class="fa fa-key"></i>
+                            </button>
+                          @endif 
+                        </td>
+                      </tr>                  
+                    @endforeach                    
+                    </tbody>
+                  @else
+                  <thead>
+                      <tr>
+                        <th>
+                          Sin Turno Abierto
+                        </th>                          
+                      </tr>
+                    </thead>  
+                  @endif
+                
               </table>              
             </div>
           </div>

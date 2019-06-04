@@ -8,9 +8,11 @@ use App\Audit;
 use App\Incidencias;
 use App\Actores;
 use App\Turnos;
+use App\Role;
 use App\Tiposincidencias;
 use App\TiposActores;
 use App\AgentesTurnos;
+use App\TblPisosLugares;
 
 
 
@@ -19,6 +21,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NovedadesRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+
+
 
 class NovedadesController extends Controller
 {
@@ -30,6 +34,10 @@ class NovedadesController extends Controller
     public function index()
     {
         //dd("hola");
+        
+        //return QrCode::size(500)->generate('Welcome to kerneldev.com!');
+        
+        
         // $Obj_Novedades=new Novedades();
         // $resultado=$Obj_Novedades->orderBy("id","DESC")->paginate(5);
         // dd($resultado);
@@ -38,7 +46,8 @@ class NovedadesController extends Controller
         $turno=$this->consultar_turno();
 
         $resultado=array();
-        if( $turno->count() > 0)
+        if ($turno!=null) {
+            if( $turno->count() > 0 && $turno->status_turno!=0)
         {
             //consulto las novedades  
             $Obj_Novedades=new Novedades();
@@ -48,10 +57,13 @@ class NovedadesController extends Controller
                     ->Join('role_user','role_user.id','tbl_novedades.role_user_id')                  
                     ->Join('roles','roles.id','role_user.role_id')                  
                     ->Join('users','users.id','role_user.user_id')                  
-                    ->where('tbl_novedades.turno_id',$turno[0]->id)
+                    ->where('tbl_novedades.turno_id',$turno->id)
                     ->orderBy('tbl_novedades.created_at','desc')
                     ->get();
         }
+        }
+       
+        
 
         //dd($resultado);
         //flash('BIENVENIDOS AL SISTEMA');
@@ -82,19 +94,31 @@ class NovedadesController extends Controller
         ->join('role_user','role_user.id','tbl_agentes_turnos.role_user_id_agente')
         ->join('users','users.id','role_user.user_id')
         ->join('roles','roles.id','role_user.role_id')
-        ->where('tbl_agentes_turnos.turno_id',$turno[0]->id)
+        ->where('tbl_agentes_turnos.turno_id',$turno->id)
         ->get();                  
 
         $tipos_incidencias= Tiposincidencias::all();
         $tipos_actores= TiposActores::all();
         
+        $pisoslugares=TblPisosLugares::select('tbl_pisos_lugares.id','tbl_pisos_lugares.piso_id','tbl_pisos_lugares.lugar_id',
+            'tbl_pisos.nombre_piso','tbl_lugares.nombre_lugar'
+        )
+            ->join('tbl_pisos','tbl_pisos.id','tbl_pisos_lugares.piso_id')
+            ->join('tbl_lugares','tbl_lugares.id','tbl_pisos_lugares.lugar_id')
+            ->orderBy('orden_piso','asc')
+            ->orderBy('nombre_lugar','asc')
+            ->get();
+        //dd($pisoslugares);
+
+
         return view('ControlNovedades.create',
             [
                 'agentes'=>$agentes,
                 'agentes_turnos'=>$agentes_turnos,
                 'tipos_incidencias'=>$tipos_incidencias,
                 'tipos_actores'=>$tipos_actores,
-                'turno'=>$turno
+                'turno'=>$turno,
+                'pisoslugares'=>$pisoslugares
             ]
         );
     }
@@ -107,7 +131,8 @@ class NovedadesController extends Controller
      */
     public function store(Request $request)
     //public function store(NovedadesRequest $request)
-    {  
+    { 
+
         //$this->validateNovedades($request);
         //dd($request->telefono_actor);
         //Consulto el turno_id
@@ -176,13 +201,14 @@ class NovedadesController extends Controller
             {
                 $msj="Sólo se aceptan 6 Fotos Máx";
             }
-
+            $time=time();
             foreach ($file as $key => $value) 
             {            
                 if(true)//($request->hasFile($key))//if($request->hasFile('url_imagen1'))
                 {
+                    $time++;
                     $nombreArchivo  =   "img_incidencias";
-                    $archivo_img    =   $aux_archivo_img[]=$nombreArchivo."_".time().'.'.$value->getClientOriginalExtension();
+                    $archivo_img    =   $aux_archivo_img[]=$nombreArchivo."_".$time.'.'.$value->getClientOriginalExtension();
                     $path           =   public_path().'/images/incidencias/';                
                     $value->move($path, $archivo_img);                
                 } 
@@ -192,11 +218,11 @@ class NovedadesController extends Controller
             $Obj_Incidencias->role_user_id=Auth::id();     
             $Obj_Incidencias->role_user_id_actor=($request["role_user_id_actor"])?$request["role_user_id_actor"]:"";                 
             $Obj_Incidencias->url_imagen_1=(isset($aux_archivo_img[0]) && $aux_archivo_img[0]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_2=(isset($aux_archivo_img[1]) && $aux_archivo_img[1]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_3=(isset($aux_archivo_img[2]) && $aux_archivo_img[2]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_4=(isset($aux_archivo_img[3]) && $aux_archivo_img[3]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_5=(isset($aux_archivo_img[4]) && $aux_archivo_img[4]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_6=(isset($aux_archivo_img[5]) && $aux_archivo_img[5]!="")?$aux_archivo_img[0]:"";
+            $Obj_Incidencias->url_imagen_2=(isset($aux_archivo_img[1]) && $aux_archivo_img[1]!="")?$aux_archivo_img[1]:"";
+            $Obj_Incidencias->url_imagen_3=(isset($aux_archivo_img[2]) && $aux_archivo_img[2]!="")?$aux_archivo_img[2]:"";
+            $Obj_Incidencias->url_imagen_4=(isset($aux_archivo_img[3]) && $aux_archivo_img[3]!="")?$aux_archivo_img[3]:"";
+            $Obj_Incidencias->url_imagen_5=(isset($aux_archivo_img[4]) && $aux_archivo_img[4]!="")?$aux_archivo_img[4]:"";
+            $Obj_Incidencias->url_imagen_6=(isset($aux_archivo_img[5]) && $aux_archivo_img[5]!="")?$aux_archivo_img[5]:"";
             $Obj_Incidencias->save();
 
             //Seteo el campo incidencia_id de la tbl_novedades
@@ -210,7 +236,7 @@ class NovedadesController extends Controller
         
         //Seteo role_user_id para cargar la novedad
         $Obj_Novedades->role_user_id=Auth::id();      
-        $Obj_Novedades->turno_id=$turno[0]->id;
+        $Obj_Novedades->turno_id=$turno->id;
         $Obj_Novedades->incluir_incidencia=($request["incidencia_id"])?"1":"0";        
         $Obj_Novedades->save();        
 
@@ -275,20 +301,13 @@ class NovedadesController extends Controller
         //$role_user=Auth::user()->whatRoleUser(Auth::user()->id);
         //dd($role_user);
 
-        $Obj_Turnos= new Turnos()   ;
-        $turno= $Obj_Turnos->select('tbl_turnos.id','tbl_turnos.role_user_id','tbl_turnos.tipo_turno_id','tbl_tipos_turnos.descripcion_turno')                  
-                ->Join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                  
-                ->Join('role_user','role_user.id','tbl_turnos.role_user_id')                  
-                ->Join('roles','roles.id','role_user.role_id')                  
-                ->Join('users','users.id','role_user.user_id')                  
-                ->where(
-                    [
-                        ['tbl_turnos.role_user_id',Auth::user()->id],
-                        ['tbl_turnos.status_turno',"1"]
-                    ]
-                )
-                ->orderby('tbl_turnos.id','DESC')->take(1)
-                ->get(); 
+        $turno=Role::select('tbl_turnos.id','tbl_turnos.role_user_id','tipo_turno_id','status_turno','descripcion_turno')
+            ->join('role_user','role_user.role_id','roles.id')                        
+            ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                                            
+            ->join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                
+            ->orderBy('tbl_turnos.created_at','desc')                                           
+            ->orderBy('tbl_turnos.tipo_turno_id','desc')                                           
+            ->first();
         //dd($turno);
         return $turno;
     }

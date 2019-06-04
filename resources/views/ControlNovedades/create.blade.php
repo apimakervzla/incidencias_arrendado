@@ -25,7 +25,7 @@
 
         
           <div class="box-header with-border">
-            <h3 class="box-title">Agentes de Turno <strong class="card-title">{{$turno[0]->descripcion_turno}}</strong></h3>
+            <h3 class="box-title">Agentes de Turno <strong class="card-title">{{$turno->descripcion_turno}}</strong></h3>
             
                 @include('flash::message')
                 
@@ -252,11 +252,23 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
-                                        </div>                                       
+                                        </div>   
+
                                         <div class="form-group">
                                             <label for="telefono">N° Habitación</label>
-                                            <input name="numero_habitacion" class="numero_habitacion incidencias form-control" id="numero_habitacion" placeholder="Ingrese Número Hab." type="text">
-                                        </div>                                       
+                                            {{-- <input name="numero_habitacion" class="numero_habitacion incidencias form-control" id="numero_habitacion" placeholder="Ingrese Número Hab." type="text"> --}}
+                                            
+                                            <select name="numero_habitacion" id="numero_habitacion" class="numero_habitacion incidencias form-control select2" data-placeholder="Seleccione" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                                <option value="">Seleccione...</option>
+                                                @foreach ($pisoslugares as $valor)
+                                            <option value="{{$valor->id}}">{{$valor->nombre_piso}} - {{$valor->nombre_lugar}}</option>    
+                                                @endforeach                    
+                                              </select>
+
+                                        </div>   
+                                        
+                                        
+
                                         </div>
                                         <div class="form-group">
                                         <label for="exampleInputFile">Evidencias</label>

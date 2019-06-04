@@ -23,5 +23,12 @@ class DatabaseSeeder extends Seeder
         $this->call(ColoresSeeder::class);
         $this->call(TiposLlavesSeeder::class);
         $this->call(TiposLlavesPerfilesSeeder::class);
+        $this->call(LugaresSeeder::class);
+        $this->call(PisosSeeder::class);
+        $this->call(PisosLugaresSeeder::class);
+        $this->call(PisosLugaresTiposLlavesSeeder::class);
+        $this->call(TblNotificacionesCorreoSeeder::class);
+        $this->call(TiposIncidenciasSeeder::class);        
+        
     }
 }

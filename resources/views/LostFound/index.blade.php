@@ -65,7 +65,7 @@
                         <i title="Actor" class="fa fa-user"></i>
                         {{ $valor->identificacion_actor }} - {{ $valor->nombre_actor }} {{ $valor->apellido_actor }}  
                         <br>
-                        <i title="N° Habitación" class="fa fa-bed"></i>{{ $valor->numero_habitacion }}
+                        <i title="N° Habitación" class="fa fa-bed"></i>{{ $valor->nombre_piso }} - {{ $valor->nombre_lugar }}
                         <br>
                         <i title="Teléfono" class="fa fa-phone"></i>{{ $valor->telefono_actor }}
                         <br>
@@ -100,9 +100,11 @@
                       </button>                                                  -->
 
 
-                      <a class="btn btn-app" data-toggle="modal" data-target="#modal-info_{{$puntero}}">
+                      {{-- <a class="btn btn-app" data-toggle="modal" data-target="#modal-info_{{$puntero}}">
                           <i class="fa fa-photo"></i> Fotos
-                      </a>
+                      </a> --}}
+                      <i style="cursor:pointer" class="fa fa-photo" data-toggle="modal" data-target="#modal-info_{{$puntero}}">
+                      </i> 
 
                     <div class="modal modal-info fade" id="modal-info_{{$puntero}}">
                           <div class="modal-dialog">

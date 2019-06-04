@@ -41,7 +41,8 @@ class AgentesTurnosController extends Controller
     {
         //Consulto el turno_id
         $Obj_Novedades=new Novedades();        
-        $turno=$Obj_Novedades->consultar_turno2();            
+        //$turno=$Obj_Novedades->consultar_turno2();            
+        $turno=$Obj_Novedades->consultar_turno();            
         if($turno->count() <= "0" )
         {            
             flash("El Supervisor No Posee Turno Activo. Ingrese Nuevamente al Sistema")->error();    
@@ -53,7 +54,7 @@ class AgentesTurnosController extends Controller
         {
             $Obj_AgentesTurnos=new AgentesTurnos()     ;
             $Obj_AgentesTurnos->role_user_id=Auth::id();
-            $Obj_AgentesTurnos->turno_id=$turno[0]->id;
+            $Obj_AgentesTurnos->turno_id=$turno->id;
             $Obj_AgentesTurnos->role_user_id_agente=$valor;
             $Obj_AgentesTurnos->save();
         }
@@ -61,7 +62,7 @@ class AgentesTurnosController extends Controller
         $agentes_turnos=$Obj_AgentesTurnos->select('users.name','role_user.id')
         ->join('role_user','role_user.id','tbl_agentes_turnos.role_user_id_agente')
         ->join('users','users.id','role_user.user_id')
-        ->where('tbl_agentes_turnos.turno_id',$turno[0]->id)
+        ->where('tbl_agentes_turnos.turno_id',$turno->id)
         ->get();
 
         //dd($agentes_turnos);

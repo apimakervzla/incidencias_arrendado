@@ -50,6 +50,35 @@
                     @enderror           
                     </div>
                 </div>
+
+                <div class="row form-group">
+                        <div class="col col-md-3"><label for="password-input" class=" form-control-label">{{ __('Clave') }}</label></div>
+                        <div class="col-12 col-md-9">
+                            <input placeholder="Clave"  id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="new-password">
+                            @error('password')                 
+                                <small class="help-block invalid-feedback form-text" role="alert">{{ $message }}</small>
+                            
+                            @enderror                               
+                        </div>            
+                    </div>
+                    {{-- <div class="row form-group">
+                        <div class="col col-md-3"><label for="password-input" class=" form-control-label">{{ __('Confirmación Clave') }}</label></div>
+                        <div class="col-12 col-md-9">
+                                <input placeholder="Confirmación Clave" id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password">               
+                            <small class="help-block form-text">Porfavor repita la contraseña</small></div>
+                    </div>
+             --}}
+                    <div class="row form-group">
+                            <div class="col col-md-3"><label for="password-input" class=" form-control-label">Foto</label></div>
+                            <div class="col-12 col-md-9">
+                                    <input type="file" class="form-control" name="file_foto_usuario[]" >
+                                {{-- <small class="help-block form-text">Porfavor repita la contraseña</small> --}}
+                            </div>
+                        </div>
+
+
+
+
             </div>
                 <div class="card-footer">
                         <button type="submit" class="btn btn-success btn-sm">

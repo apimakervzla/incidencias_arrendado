@@ -9,8 +9,10 @@ use App\User;
 use App\Audit;
 use App\Actores;
 use App\Turnos;
+use App\Role;
 use App\Tiposincidencias;
 use App\TiposActores;
+use App\TblPisosLugares;
 
 
 use Illuminate\Http\Request;
@@ -30,6 +32,10 @@ class IncidenciasController extends Controller
     public function index()
     {
         //
+        $turno=$this->consultar_turno();
+
+        $resultado=null;
+        if ($turno!=null) {
         //echo "jajjaa";exit;
         $resultado= Incidencias::select('tbl_incidencias.id','tbl_incidencias.role_user_id','tbl_incidencias.created_at',
                             'tbl_incidencias.tipo_incidencia_id','tbl_incidencias.role_user_id_actor',
@@ -38,19 +44,52 @@ class IncidenciasController extends Controller
                             'tbl_incidencias.url_imagen_6','tbl_incidencias.detalle_incidencia','tbl_tipos_incidencias.descripcion_tipo_incidencia',
                             'users.name','roles.description','tbl_tipos_actores.descripcion_tipo_actor',
                             'tbl_actores.nombre_actor','tbl_actores.apellido_actor','tbl_actores.telefono_actor','tbl_actores.numero_habitacion',
-                            'tbl_actores.identificacion_actor')
+                            'tbl_actores.identificacion_actor','tbl_pisos.nombre_piso','tbl_lugares.nombre_lugar')
                   ->Join('tbl_tipos_incidencias','tbl_tipos_incidencias.id','tbl_incidencias.tipo_incidencia_id')                                    
+
+                  
+
                   ->leftJoin('role_user','role_user.id','tbl_incidencias.role_user_id_actor')                  
                   ->leftJoin('users','users.id','role_user.user_id')                  
                   ->leftJoin('roles','roles.id','role_user.role_id')                  
                   ->leftJoin('tbl_actores','tbl_actores.id','tbl_incidencias.actor_id')                  
+
+                  ->leftJoin('tbl_pisos_lugares','tbl_pisos_lugares.id','tbl_actores.numero_habitacion')                  
+                  ->leftJoin('tbl_pisos','tbl_pisos.id','tbl_pisos_lugares.piso_id')
+                  ->leftJoin('tbl_lugares','tbl_lugares.id','tbl_pisos_lugares.lugar_id')
+
                   ->leftJoin('tbl_tipos_actores','tbl_tipos_actores.id','tbl_actores.tipo_actor_id')                  
                   
                   //->where('tbl_novedades.turno_id',$turno_id)
                   ->get();
-
+        }
         //dd($resultado);
-        return view('Incidencias.index')->with('incidencias',$resultado);
+        return view('Incidencias.index',
+        [
+            'incidencias'=>$resultado,
+            'turno'=>$turno
+            // 'tipos_actores'=>$tipos_actores
+        ]
+        );        
+    }
+
+    public function consultar_turno()
+    {
+        //Consulto el Role User del usurio logeado
+        //$role_user=Auth::user()->whatRoleUser(Auth::user()->id);
+        //dd($role_user);
+
+        $turno=Role::select('tbl_turnos.id','tbl_turnos.role_user_id','tipo_turno_id','status_turno','descripcion_turno')
+            ->join('role_user','role_user.role_id','roles.id')                        
+            ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                                            
+            ->join('tbl_tipos_turnos','tbl_tipos_turnos.id','tbl_turnos.tipo_turno_id')                                                        
+            ->orderBy('tbl_turnos.created_at','desc')                                           
+            ->orderBy('tbl_turnos.tipo_turno_id','desc')                                           
+            ->first();
+        // dd($turno);
+
+        
+        return $turno;
     }
 
     /**
@@ -68,11 +107,22 @@ class IncidenciasController extends Controller
 
         $tipos_incidencias= Tiposincidencias::all();
         $tipos_actores= TiposActores::all();
+
+        $pisoslugares=TblPisosLugares::select('tbl_pisos_lugares.id','tbl_pisos_lugares.piso_id','tbl_pisos_lugares.lugar_id',
+            'tbl_pisos.nombre_piso','tbl_lugares.nombre_lugar'
+        )
+            ->join('tbl_pisos','tbl_pisos.id','tbl_pisos_lugares.piso_id')
+            ->join('tbl_lugares','tbl_lugares.id','tbl_pisos_lugares.lugar_id')
+            ->orderBy('orden_piso','asc')
+            ->orderBy('nombre_lugar','asc')
+            ->get();
+
         return view('Incidencias.create',
             [
                 'agentes'=>$agentes,
                 'tipos_incidencias'=>$tipos_incidencias,
-                'tipos_actores'=>$tipos_actores
+                'tipos_actores'=>$tipos_actores,
+                "pisoslugares"=>$pisoslugares
             ]
         );        
     }
@@ -149,13 +199,14 @@ class IncidenciasController extends Controller
             {
                 $msj="Sólo se aceptan 6 Fotos Máx";
             }
-
+            $time=time();
             foreach ($file as $key => $value) 
             {            
                 if(true)//($request->hasFile($key))//if($request->hasFile('url_imagen1'))
                 {
+                    $time++;
                     $nombreArchivo  =   "img_incidencias";
-                    $archivo_img    =   $aux_archivo_img[]=$nombreArchivo."_".time().'.'.$value->getClientOriginalExtension();
+                    $archivo_img    =   $aux_archivo_img[]=$nombreArchivo."_".$time.'.'.$value->getClientOriginalExtension();
                     $path           =   public_path().'/images/incidencias/';                
                     $value->move($path, $archivo_img);                
                 } 
@@ -165,11 +216,11 @@ class IncidenciasController extends Controller
             $Obj_Incidencias->role_user_id=Auth::id();     
             $Obj_Incidencias->role_user_id_actor=($request["role_user_id_actor"])?$request["role_user_id_actor"]:"";                 
             $Obj_Incidencias->url_imagen_1=(isset($aux_archivo_img[0]) && $aux_archivo_img[0]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_2=(isset($aux_archivo_img[1]) && $aux_archivo_img[1]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_3=(isset($aux_archivo_img[2]) && $aux_archivo_img[2]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_4=(isset($aux_archivo_img[3]) && $aux_archivo_img[3]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_5=(isset($aux_archivo_img[4]) && $aux_archivo_img[4]!="")?$aux_archivo_img[0]:"";
-            $Obj_Incidencias->url_imagen_6=(isset($aux_archivo_img[5]) && $aux_archivo_img[5]!="")?$aux_archivo_img[0]:"";
+            $Obj_Incidencias->url_imagen_2=(isset($aux_archivo_img[1]) && $aux_archivo_img[1]!="")?$aux_archivo_img[1]:"";
+            $Obj_Incidencias->url_imagen_3=(isset($aux_archivo_img[2]) && $aux_archivo_img[2]!="")?$aux_archivo_img[2]:"";
+            $Obj_Incidencias->url_imagen_4=(isset($aux_archivo_img[3]) && $aux_archivo_img[3]!="")?$aux_archivo_img[3]:"";
+            $Obj_Incidencias->url_imagen_5=(isset($aux_archivo_img[4]) && $aux_archivo_img[4]!="")?$aux_archivo_img[4]:"";
+            $Obj_Incidencias->url_imagen_6=(isset($aux_archivo_img[5]) && $aux_archivo_img[5]!="")?$aux_archivo_img[5]:"";
             $Obj_Incidencias->save();
 
                

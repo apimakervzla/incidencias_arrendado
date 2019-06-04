@@ -28,9 +28,9 @@
                 <th>
                   Rol
                 </th>
-                <th>
+                {{-- <th>
                   Fecha Creacion/Modificación
-                </th>
+                </th> --}}
                 <th>
                     Acciones
                 </th>
@@ -39,8 +39,9 @@
             <tbody>
               @foreach($usuarios as $usuario)
               <tr>
-                <td>
-                    {{ $usuario->name }}
+                <td >
+                    <img class="img-responsive img-circle" width="70" height="90" src="{{ asset("images/usuarios/$usuario->foto_usuario")}}" >
+                    {{ $usuario->name }}                    
                 </td>
                 <td>
                   {{ $usuario->email }}
@@ -48,14 +49,14 @@
                 <td>
                    {{ $usuario->description }}
                 </td>
-                <td>
+                {{-- <td>
                   {{ $usuario->created_at}}
-                </td>
+                </td> --}}
                 <td class="td-actions">
                   <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('edit.users',['user_id'=>$usuario->id])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Editar">
-                    <i<i class="fa fa-pencil"></i>
+                    <i class="fa fa-pencil"></i>
                   </button>                  
-                  @switch($usuario->status)
+                  {{-- @switch($usuario->status)
                       @case(1)
                       <button style="font-size: 1.2rem" type="button" rel="tooltip" title="" onclick="location.href='{{ route('status.users',['user_id'=>$usuario->id,'status'=>$usuario->status])}}'" class="btn btn-white btn-link btn-sm" data-original-title="Remover">
                         <i class="fa fa-unlock"></i>
@@ -67,7 +68,7 @@
                     </button>
                           @break
                       @default                          
-                  @endswitch                
+                  @endswitch                 --}}
                 </td>
               </tr>
               @endforeach

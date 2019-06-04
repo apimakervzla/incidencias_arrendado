@@ -5,12 +5,12 @@ namespace App;
 use App\Role;
 use App\Turnos;
 use App\TiposTurnos;
-use App\Novedades;
+use App\Mail\Novedades;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\VerificandoEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -72,19 +72,24 @@ class User extends Authenticatable
 
     public function whatModule($user_id)
     {
-        $moduleauth= Role::select('module.id as module_id','module_option.id as module_option_id','module_description','icon_module','module_option_description','icon_module_option','route','correlative_module')
+        $moduleauth= Role::select('module.id as module_id','module_option.id as module_option_id',
+        'module_description','icon_module','module_option_description','icon_module_option','route','correlative_module')
                         ->join('role_user','role_user.role_id','roles.id')                        
-                        ->join('tbl_turnos','authorization.role_id','role_user.role_id')                        
+                        ->join('authorization','authorization.role_id','role_user.role_id')                        
                         ->join('module_option','module_option.id','authorization.module_option_id')
                         ->join('module','module.id','module_option.module_id')                        
                         ->where('role_user.user_id',$user_id)                        
+                        ->orderBy('correlative_module','asc')
+                        ->orderBy('correlative_module_option','asc')
                         ->get();        
-
+        //echo "jajja";exit;
+        //dd($moduleauth);
         return $moduleauth;
     }
     public function turno($user_id)
     {
         if(Auth::id()){
+
             $turno_actual=Role::select('tbl_turnos.role_user_id','tipo_turno_id','status_turno')
             ->join('role_user','role_user.role_id','roles.id')                        
             ->join('tbl_turnos','tbl_turnos.role_user_id','role_user.id')                                            
@@ -92,6 +97,12 @@ class User extends Authenticatable
             ->orderBy('tbl_turnos.tipo_turno_id','desc')                                           
             ->first(); 
 
+            $mirol=Role::select('role_user.role_id','role_user.id as role_user_id')
+                        ->join('role_user','role_user.role_id','roles.id')
+                        ->join('users','users.id','role_user.user_id')
+                        ->where('user_id',Auth::id())
+                        ->first();
+// dd($mirol);
             $fecha_actual=Carbon::now();
             $hora_actual=$fecha_actual->format('H:i:s');
 
@@ -102,15 +113,18 @@ class User extends Authenticatable
                             CAST('$hora_actual' AS time) BETWEEN tiempo_desde AND tiempo_hasta
                             OR (NOT CAST('$hora_actual' AS time) BETWEEN tiempo_hasta AND tiempo_desde AND tiempo_desde > tiempo_hasta)) as tipo_turno_id"))                        
                             ->first();
-            
+        
+          if ($mirol->role_id==2) {
+             
+          
             if($turno_actual){
                     if($turno_actual->status_turno!=1)
                 {
-                    if ($turno_actual->role_user_id!=$user_id) {
+                    if ($turno_actual->role_user_id!=$mirol->role_user_id) {
 
                         if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
                             $turno= new Turnos();
-                            $turno->role_user_id=$user_id;
+                            $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                             $turno->status_turno=1;            
                             $turno->save();
@@ -124,7 +138,7 @@ class User extends Authenticatable
                     else{
                         if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
                             $turno= new Turnos();
-                            $turno->role_user_id=$user_id;
+                            $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                             $turno->status_turno=1;            
                             $turno->save();
@@ -137,56 +151,61 @@ class User extends Authenticatable
                     }
                 }
                 else{
-                    if($turno_actual->role_user_id!=$user_id){
+                    if($turno_actual->role_user_id!=$mirol->role_user_id){
 
                         if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
 
                             $turno= new Turnos();
-                            $turno->role_user_id=$turno_actual->role_user_id;
+                            $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$turno_actual->tipo_turno_id;
                             $turno->status_turno=0;            
                             $turno->save();
 
-                            $destinatarios = "";
+                            $destinatarios = "rubentorres26@gmail.com";
 
                             $datos["tipo_turno_id"]=$tipo_turno_id->tipo_turno_id;
-                            $datos["user_id"]=$user_id;
+                            $datos["user_id"]=Auth::id();
 
-                            foreach ($destinatarios as $key => $destinatario) {
-                                switch ($destinatario->modulo_destinatario) {
-                                    case 'novedades':
-                                    Mail::to($destinatario->email)->send(new NovedadesMail($datos));
-                                        break;
-                                    case 'incidencias':
-                                    Mail::to($destinatario->email)->send(new IncidenciasMail($datos));
-                                        break;
-                                    case 'llaves':
-                                    Mail::to($destinatario->email)->send(new LlavesMail($datos));
-                                        break;
-                                    case 'lostfound':
-                                    Mail::to($destinatario->email)->send(new LostFoundMail($datos));
-                                        break;
+                            
+                            // foreach ($destinatarios as $key => $destinatario) {
+                            //     switch ($destinatario->modulo_destinatario) {
+                            //         case 'novedades':
+                            //         Mail::to($destinatario->mail)->send(new Novedades($datos));
+                            //             break;
+                            //         case 'incidencias':
+                            //         Mail::to($destinatario->email)->send(new Incidencias($datos));
+                            //             break;
+                            //         case 'llaves':
+                            //         Mail::to($destinatario->email)->send(new Llaves($datos));
+                            //             break;
+                            //         case 'lostfound':
+                            //         Mail::to($destinatario->email)->send(new LostFound($datos));
+                            //             break;
                                     
-                                    default:
-                                        # code...
-                                        break;
-                                }
-                            }
+                            //         default:
+                            //             # code...
+                            //             break;
+                            //     }
+                            // }
 
                         
 
                             $turno= new Turnos();
-                            $turno->role_user_id=$user_id;
+                            $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                             $turno->status_turno=1;            
                             $turno->save();
+                        }
+                        else {
+                            $valores=1;                    
+                            return $valores;
                         }
                     }
                     else{
                         if($turno_actual->tipo_turno_id!=$tipo_turno_id->tipo_turno_id){
 
                             $turno= new Turnos();
-                            $turno->role_user_id=$turno_actual->role_user_id;
+                            $turno->role_user_id=$mirol->role_user_id;
                             $turno->tipo_turno_id=$turno_actual->tipo_turno_id;
                             $turno->status_turno=0;            
                             $turno->save();
@@ -207,12 +226,15 @@ class User extends Authenticatable
                 }
                 else{
                     $turno= new Turnos();
-                    $turno->role_user_id=$user_id;
+                    $turno->role_user_id=$mirol->role_user_id;
                     $turno->tipo_turno_id=$tipo_turno_id->tipo_turno_id;
                     $turno->status_turno=1;            
                     $turno->save();
                 }
-
+            }
+            else {
+                $turno=2;
+            }
             
             }
         else{
@@ -230,13 +252,19 @@ class User extends Authenticatable
                         ->first();        
         return $since->created_at;
     }
-    /**
+    
+    public function sendEmailVerificacion($verify)
+    {
+        
+        $this->notify(new VerificandoEmail($verify));
+    }
+        /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status'
+        'name', 'email', 'password', 'status','foto_usuario','email_verified_at'
     ];
 
     /**

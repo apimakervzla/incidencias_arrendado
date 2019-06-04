@@ -395,28 +395,7 @@ $(function () {
   })
 })
 
-$(function () {
-  'use strict'
-  var i = $('<i />', { 'class': 'fa fa-star-o' })
-  i.css('color', '#fff')
-  var a = $('<a />', { href: 'https://themequarry.com' })
-  a.append(i)
-  var span = $('<span />')
-  span.append('Premium Templates')
-  span.css('color', '#fff')
-  a.append(span)
-  var li = $('<li />', { 'class': 'bg-success' })
-  li.append(a)
-  li.on('mouseover', function () {
-    $(this).find('a').first().css('background-color', '#008d4c')
-    $(this).find('.fa').removeClass('fa-star-o').addClass('fa-star')
-  })
-  li.on('mouseout', function () {
-    $(this).find('a').first().css('background-color', '#00a65a')
-    $(this).find('.fa').removeClass('fa-star').addClass('fa-star-o')
-  })
-  $('.sidebar-menu').append(li)
-})
+
 
 $(function () {
   'use strict'

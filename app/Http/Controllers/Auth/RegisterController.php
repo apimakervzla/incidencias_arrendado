@@ -73,9 +73,25 @@ class RegisterController extends Controller
      * @return \App\User
      */
     public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
+    {   
+        //guardo la foto
+        $file = $request->file('file_foto_usuario');                           
+        $archivo_img="img_usuario_default.jpg";
+        if($file)
+        {
+            $nombreArchivo  =   "img_usuario";
+            $archivo_img    =   $nombreArchivo."_".time().'.'.$file[0]->getClientOriginalExtension();                
+            $path           =   public_path().'/images/usuarios/';
+            $file[0]->move($path, $archivo_img); 
+        }
 
+        
+         
+
+        $this->validator($request->all())->validate();
+        $request["foto_usuario"]=$archivo_img;        
+        $request["email_verified_at"]=Carbon::now();
+        
         event(new Registered($user = $this->create($request->all())));
 
         // $this->guard()->login($user);
@@ -91,10 +107,14 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
+        //dd($data);
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'foto_usuario' => $data['foto_usuario'],
+            'email_verified_at' => $data['email_verified_at'],
             'password' => Hash::make($data['password']),
+            'email_verified_at' => Carbon::now()
         ]);
         $user->roles()
         ->attach(Role::where('id', $data['role_id'])->first());
@@ -115,7 +135,7 @@ class RegisterController extends Controller
     {
         $roles = Role::get();
  
-        return view('Auth.register',['roles'=>$roles]);
+        return view('auth.register',['roles'=>$roles]);
     }
 
     public function edit($user_id)
@@ -128,7 +148,7 @@ class RegisterController extends Controller
         $roles = Role::get();        
         // dd($user->role_id);        
 
-        return view('Auth.edit',['user'=>$user,'roles'=>$roles]);
+        return view('auth.edit',['user'=>$user,'roles'=>$roles]);
     }
 
     public function update(Request $request,$user_id)
@@ -140,8 +160,35 @@ class RegisterController extends Controller
             return view('index.users');
         }
         else{
+            $user_general = User::find($user_id);
             $user = User::find($user_id)
-            ->fill($request->input());            
+            ->fill($request->input());   
+
+            
+            
+            $user->password=$user_general->password;
+            $user->foto_usuario=$user_general->foto_usuario;
+            //dd($user);
+            if($request["password"]!="")
+            {
+                $user->password=Hash::make($request['password']);
+            }
+            //guardo la foto
+            $file = $request->file('file_foto_usuario');                           
+            //$archivo_img="img_usuario_default.jpg";
+            if($file)
+            {
+                $nombreArchivo  =   "img_usuario";
+                $archivo_img    =   $nombreArchivo."_".time().'.'.$file[0]->getClientOriginalExtension();                
+                $path           =   public_path().'/images/usuarios/';
+                $file[0]->move($path, $archivo_img); 
+                $user->foto_usuario=$archivo_img;
+            }
+            
+            
+
+
+
             $user->save();
 
             $user_up = DB::table('role_user')
@@ -163,13 +210,15 @@ class RegisterController extends Controller
     public function index()
     {
         
-        $usuarios = User::select(DB::raw('users.id, email, users.name, users.created_at, roles.description, users.status'))
+        $usuarios = User::select(DB::raw('users.foto_usuario,users.id, email, users.name, users.created_at, roles.description, users.status'))
                     ->join('role_user', 'users.id', '=', 'role_user.user_id')
                     ->join('roles', 'role_user.role_id', '=', 'roles.id')
                     ->orderBy('users.created_at','desc')
-                    ->get();       
+                    ->get();      
+                    
+                    
 
-        return view('Auth.index',['usuarios'=>$usuarios]);        
+        return view('auth.index',['usuarios'=>$usuarios]);        
     }
 
     public function destroy($user_id)

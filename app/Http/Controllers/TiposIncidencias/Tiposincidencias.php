@@ -5,7 +5,7 @@ namespace App\Http\Controllers\TiposIncidencias;
 use App\Tiposincidencias;
 use Illuminate\Http\Request;
 
-class Tiposincidencias extends Controller
+class TiposincidenciasController extends Controller
 {
     /**
      * Display a listing of the resource.

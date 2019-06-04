@@ -155,7 +155,7 @@ class RegisterController extends Controller
             $auditoria->action = "Se editó el Usuario:".$user->name.", Rol:".$rolename->description;
 
             $auditoria->save();
-
+            flash("Se ha editado El Usuario ".$user->name." con Rol:".$rolename->description." de forma Exitosa")->success();    
             return redirect()->route("index.users");
         }
     }
@@ -170,6 +170,29 @@ class RegisterController extends Controller
                     ->get();       
 
         return view('Auth.index',['usuarios'=>$usuarios]);        
+    }
+
+    public function logoutsigturnoigusuper()
+    {
+        Auth::logout();
+        flash("Se ha cerrado el ultimo turno que dejaron abierto, si desea tomar el turno actual vuelva a iniciar")->warning();    
+        return redirect()->route("login");        
+    }
+
+    public function logoutturnodifsuper()
+    {
+        
+        Auth::logout();
+        flash("Ya existe un supervisor encargado del turno actual, espere a que termine el turno y vuelva a iniciar")->warning();    
+        return redirect()->route("login");            
+    }
+
+    public function logoutturnocerrado()
+    {
+        
+        Auth::logout();
+        flash("El turno actual fue cerrado, debe esperar el proximo turno para iniciar")->warning();    
+        return redirect()->route("login");        
     }
 
     public function destroy($user_id)
